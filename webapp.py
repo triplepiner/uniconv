@@ -38,7 +38,7 @@ def webapp():
         #     break
 
         if data['source'] != None:
-            if data['source'].get('filename').lower().endswith('mp4') or data['source'].get('filename').lower().endswith('avi') or data['source'].get('filename').lower().endswith('mov') == True and data['url'] == '':
+            if data['source'].get('filename').lower().endswith('mp4')==True or data['source'].get('filename').lower().endswith('avi') or data['source'].get('filename').lower().endswith('mov') == True and data['url'] == '':
                 while True:
                     format = input_group("Choose your export format",[
                         radio(label='Export format',options=['mp4','avi','gif','mp3'],required=False, name='radio'),
