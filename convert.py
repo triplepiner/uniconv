@@ -1,0 +1,92 @@
+from moviepy.editor import *
+import cv2
+import pytube
+import ssl
+import os
+from pathlib import Path
+import shutil
+
+ssl._create_default_https_context = ssl._create_unverified_context
+
+
+
+
+# Check whether the specified path exists or not
+
+path = f'/Users/makarulesov/PycharmProjects/file_converter/output'
+isExist = os.path.exists(path)
+
+# if not isExist:
+#
+#     # Create a new directory because it does not exist
+#     os.makedirs(path)
+#     print("The new directory is created!")
+
+def vid_to_gif(source,resize_factor,export):
+    clip = VideoFileClip(source).resize(resize_factor)
+    clip.write_gif(export)
+
+def vid_to_avi(source,resize_factor,export):
+    clip = VideoFileClip(source).resize (resize_factor)
+    clip.write_videofile(export, codec='libx264')
+
+def vid_to_mp4(source,resize_factor,export):
+    clip = VideoFileClip(source).resize (resize_factor)
+    clip.write_videofile(export, codec='libx264')
+
+# def vid_to_imgs():
+#     capture = cv2.VideoCapture (source)
+#     frameNr = 0
+#     dirName = path
+#
+#     while (True):
+#         success, frame = capture.read ()
+#         if success:
+#             cv2.imwrite (f'{dirName}/{frameNr}.{export_format}', frame)
+#         else:
+#             break
+#         frameNr = frameNr + 1
+#
+#     capture.release ()
+
+# def imgs_to_vid():
+#     images_list = f'output/'
+#     clip = ImageSequenceClip(images_list, fps=25).resize(resize_factor)
+#     clip.write_videofile(export_name +'.'+ export_format, codec='libx264')
+
+def vid_to_audio(source,resize_factor,export):
+    clip = VideoFileClip(source).resize(resize_factor)
+    clip.audio.write_audiofile(export)
+def yt_to_vid(source,export):
+    youtube = pytube.YouTube(source)
+    video = youtube.streams.filter(file_extension='mp4').first()
+    video.download ('/Users/makarulesov/PycharmProjects/file_converter', filename = f'{export}.mp4')
+
+def yt_to_audio(source,export):
+    youtube = pytube.YouTube(source)
+    video = youtube.streams.first()
+    video.download('/Users/makarulesov/PycharmProjects/file_converter',filename='useless_file.mp4')
+    mp4_file = 'useless_file.mp4'
+    mp3_file = f'{export}.mp3'
+    clip = VideoFileClip(mp4_file)
+    clip.audio.write_audiofile(mp3_file)
+    os.remove(mp4_file)
+
+
+
+
+# myfile = Path("output.zip")
+# if len(os.listdir('/Users/makarulesov/PycharmProjects/file_converter/output')) != 0 and not myfile.is_file():
+#     shutil.make_archive ('output', 'zip', path)
+
+
+
+
+
+
+
+
+
+
+
+
