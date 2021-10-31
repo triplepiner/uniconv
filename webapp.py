@@ -137,7 +137,7 @@ def webapp():
 #             popup ('Error yt', [
 #                 put_markdown ("We only support youtube as a website to download things from"),
 #                 put_buttons (['Ok'], onclick=lambda _: close_popup ())
-            ])
+#             ])
 
         if data['url'] != '' and data['source'] != None:
             popup ('Error, both formats', [
