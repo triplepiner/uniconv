@@ -11,9 +11,6 @@ from moviepy.editor import *
 
 
 
-
-
-sep = '.'
 # We create our webapp
 def webapp():
     put_markdown('## Welcome to the club buddy')
@@ -100,28 +97,28 @@ def webapp():
         #     output_box.append(put_file('output.gif', content=open('output.gif', 'rb').read(), label='output.gif'))
 
         # format the user wants from yt video
-        if data['url'] != '' :
-            if data['url'] != '' and data['source'] == None and not (data['url'].startswith('https://www.youtube.com/watch?v=') or data['url'].startswith('www.youtube.com/watch?v=') or data['url'].startswith('https://www.youtu.be/') or data['url'].startswith('http://www.youtube.com/watch?v=')):
+        if data['url'] != '' and data['source'] == None:
+            if not data['url'].startswith('https://'):
                 popup ('Error yt', [
                     put_markdown ("We only support youtube as a website to download things from"),
                     put_buttons (['Ok'], onclick=lambda _: close_popup ())
                 ])
-            if data['url'] != '' and data['source'] == None and (data['url'].startswith('https://www.youtube.com/watch?v=') or data['url'].startswith('www.youtube.com/watch?v=') or data['url'].startswith('https://www.youtu.be/') or data['url'].startswith('http://www.youtube.com/watch?v=')
+            if data['url'].startswith('https://www.youtube.com/watch?v=') or data['url'].startswith('www.youtube.com/watch?v=') or data['url'].startswith('https://youtu.be/') or data['url'].startswith('http://www.youtube.com/watch?v='):
                 while True:
                     linker = input_group ("Choose your export format", [
                         radio (label='Export format', options=['mp4', 'mp3'], required=False,
                                name='radio'),
                         actions (name='last', buttons=['Submit', 'Go back'])
                     ])
-
-                    if linker['last'] == 'Submit' and linker['radio'] == None:
-                        put_warning ('Please choose the format to convert to , try again', closable=True)
-
-                    if linker['last'] == 'Go back':
-                        run_js ('window.location.reload()')
-
                     if linker['radio'] != None:
                         break
+                if linker['last'] == 'Submit' and linker['radio'] == None:
+                    put_warning ('Please choose the format to convert to , try again', closable=True)
+
+                if linker['last'] == 'Go back':
+                    run_js ('window.location.reload()')
+
+
 
                 if linker['last'] == 'Submit' and linker['radio'] == 'mp4':
                     if os.path.isfile ('output.mp4'):
