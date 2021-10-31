@@ -158,4 +158,6 @@ def webapp():
 
 
 if __name__ == '__main__':
-    start_server(webapp, debug = True, port=8080,cdn=False)
+    import os
+    port = int(os.environ.get('PORT', 8080))
+    start_server(webapp, debug = True, port=port,cdn=False)
