@@ -60,12 +60,12 @@ def vid_to_audio(source,resize_factor,export):
 def yt_to_vid(source,export):
     youtube = pytube.YouTube(source)
     video = youtube.streams.filter(file_extension='mp4').first()
-    video.download ('/Users/makarulesov/PycharmProjects/file_converter', filename = f'{export}.mp4')
+    video.download (filename = f'{export}.mp4')
 
 def yt_to_audio(source,export):
     youtube = pytube.YouTube(source)
     video = youtube.streams.first()
-    video.download('/Users/makarulesov/PycharmProjects/file_converter',filename='useless_file.mp4')
+    video.download(filename='useless_file.mp4')
     mp4_file = 'useless_file.mp4'
     mp3_file = f'{export}.mp3'
     clip = VideoFileClip(mp4_file)
