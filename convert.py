@@ -13,8 +13,6 @@ ssl._create_default_https_context = ssl._create_unverified_context
 
 # Check whether the specified path exists or not
 
-path = f'/Users/makarulesov/PycharmProjects/file_converter/output'
-isExist = os.path.exists(path)
 
 # if not isExist:
 #
