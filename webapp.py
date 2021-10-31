@@ -100,7 +100,7 @@ def webapp():
         #     output_box.append(put_file('output.gif', content=open('output.gif', 'rb').read(), label='output.gif'))
 
         # format the user wants from yt video
-        if data['url'] != '' and data['source'] == None and(data['url'].startswith('https://www.youtube.com/watch?v=') or data['url'].startswith('www.youtube.com/watch?v=') or data['url'].startswith('www.youtu.be/') or data['url'].startswith('http://www.youtube.com/watch?v=')):
+        if data['url'] != '' and data['source'] == None and(data['url'].startswith('https://www.youtube.com/watch?v=') or data['url'].startswith('www.youtube.com/watch?v=') or data['url'].startswith('https://www.youtu.be/') or data['url'].startswith('http://www.youtube.com/watch?v=')):
                 while True:
                     linker = input_group ("Choose your export format", [
                         radio (label='Export format', options=['mp4', 'mp3'], required=False,
@@ -132,11 +132,11 @@ def webapp():
                     output_box.append (put_file (name='output.mp3', content=open ('output.mp3', 'rb').read (), label='download me!'))
 
 
-#errors
-        if data['url'] != '' and data['source'] == None and not (data['url'].startswith('https://www.youtube.com/watch?v=') or data['url'].startswith('www.youtube.com/watch?v=') or data['url'].startswith('https://www.youtu.be/') or data['url'].startswith('http://www.youtube.com/watch?v=')):
-            popup ('Error yt', [
-                put_markdown ("We only support youtube as a website to download things from"),
-                put_buttons (['Ok'], onclick=lambda _: close_popup ())
+# #errors
+#         if data['url'] != '' and data['source'] == None and not (data['url'].startswith('https://www.youtube.com/watch?v=') or data['url'].startswith('www.youtube.com/watch?v=') or data['url'].startswith('https://www.youtu.be/') or data['url'].startswith('http://www.youtube.com/watch?v=')):
+#             popup ('Error yt', [
+#                 put_markdown ("We only support youtube as a website to download things from"),
+#                 put_buttons (['Ok'], onclick=lambda _: close_popup ())
             ])
 
         if data['url'] != '' and data['source'] != None:
