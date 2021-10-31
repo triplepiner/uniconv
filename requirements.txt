@@ -26,4 +26,3 @@ ua-parser==0.10.0
 urllib3==1.26.7
 user-agents==2.2.0
 youtube-dl==2021.6.6
-opencv-python==4.5.3.56
