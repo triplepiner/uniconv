@@ -25,7 +25,6 @@ def webapp():
         data = input_group ("File input", [
             file_upload(placeholder="Upload your video file here", multiple=False, max_size='60M',name='source', value=0,accept=['.mp4','.avi','.mov'],),
             input(label='Youtube url',placeholder='Or paste your Youtube url here.', type=URL,name='url'),
-            select(label='Select the size of your new file that you want relative to the original file.',options=['the same size','0.9x','0.5x','0.3x','0.1x'], name='resizer' ),
             actions (name='cmd', buttons=['Proceed to conversion', {'label': 'Reset', 'type': 'reset'}])
 
 
@@ -39,6 +38,7 @@ def webapp():
                 while True:
                     format = input_group("Choose your export format",[
                         radio(label='Export format',options=['mp4','avi','gif','mp3'],required=False, name='radio'),
+                                    select(label='Select the size of your new file that you want relative to the original file.',options=['the same size','0.9x','0.5x','0.3x','0.1x'], name='resizer' ),
                         actions(name='last', buttons=['Submit', 'Go back'])
                     ])
 
@@ -57,7 +57,7 @@ def webapp():
                                 os.remove (FILE_OUTPUT)
                             with open (FILE_OUTPUT, "wb") as out_file:
                                 out_file.write(data['source'].get('content'))
-                            output_box.append(put_file(FILE_OUTPUT,content=open('output.mp4', 'rb').read(),label='Download me!'))
+                            output_box.append(put_file(FILE_OUTPUT,content=open('output.mp4', 'rb').read(),label='output.mp4'))
 
 
                 if format['last'] == 'Submit' and format['radio'] == 'mp3':
@@ -67,7 +67,8 @@ def webapp():
                             with open (FILE_OUTPUT, "wb") as out_file:
                                 out_file.write(data['source'].get('content'))
                             vid_to_audio(source=FILE_OUTPUT,resize_factor=1,export='output.mp3')
-                            output_box.append(put_file('output.mp3',content=open('output.mp3', 'rb').read(),label='Download me!'))
+                            output_box.append(put_file('output.mp3',content=open('output.mp3', 'rb').read(),label='output.mp3'))
+
 
                 if format['last'] == 'Submit' and format['radio'] == 'gif':
                             FILE_OUTPUT = 'output.mp4'
@@ -75,8 +76,8 @@ def webapp():
                                 os.remove (FILE_OUTPUT)
                             with open (FILE_OUTPUT, "wb") as out_file:
                                 out_file.write(data['source'].get('content'))
-                            vid_to_gif(source=FILE_OUTPUT,resize_factor=0.1,export='output.gif')
-                            output_box.append(put_file('output.gif',content=open('output.gif', 'rb').read(),label='Download me!'))
+                            vid_to_gif(source=FILE_OUTPUT,resize_factor=1,export='output.gif')
+                            output_box.append(put_file('output.gif',content=open('output.gif', 'rb').read(),label='output.gif'))
 
                 if format['last'] == 'Submit' and format['radio'] == 'avi':
                     FILE_OUTPUT = 'output.avi'
@@ -84,7 +85,7 @@ def webapp():
                         os.remove (FILE_OUTPUT)
                     with open (FILE_OUTPUT, "wb") as out_file:
                         out_file.write (data['source'].get ('content'))
-                    output_box.append (put_file (FILE_OUTPUT, content=open ('output.avi', 'rb').read (), label='Download me!'))
+                    output_box.append (put_file (FILE_OUTPUT, content=open ('output.avi', 'rb').read (), label='output.avi'))
 
         # if format['last'] == 'Submit' and format['radio'] == 'gif':
         #     FILE_OUTPUT = 'output.mp4'
