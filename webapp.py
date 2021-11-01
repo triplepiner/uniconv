@@ -38,9 +38,24 @@ def webapp():
                 while True:
                     format = input_group("Choose your export format",[
                         radio(label='Export format',options=['mp4','avi','gif','mp3'],required=False, name='radio'),
-                                    select(label='Select the size of your new file that you want relative to the original file.',options=['the same size','0.9x','0.5x','0.3x','0.1x'], name='resizer' ),
+                        select(label='Select the size of your new file that you want relative to the original file.',options=['The Same Size','0.9x','0.5x','0.3x','0.1x'], name='resizer' ),
                         actions(name='last', buttons=['Submit', 'Go back'])
                     ])
+
+                    if format['resizer'] == 'The Same Size':
+                        resize_fac = 1
+
+                    if format['resizer'] == '0.9x':
+                        resize_fac = 0.9
+
+                    if format['resizer'] == '0.5x':
+                        resize_fac = 0.5
+
+                    if format['resizer'] == '0.3x':
+                        resize_fac = 0.3
+
+                    if format['resizer'] == '0.1x':
+                        resize_fac = 0.1
 
 
                     if format['last'] == 'Submit' and format['radio'] == None:
@@ -66,7 +81,7 @@ def webapp():
                                 os.remove (FILE_OUTPUT)
                             with open (FILE_OUTPUT, "wb") as out_file:
                                 out_file.write(data['source'].get('content'))
-                            vid_to_audio(source=FILE_OUTPUT,resize_factor=1,export='output.mp3')
+                            vid_to_audio(source=FILE_OUTPUT,resize_factor=resize_fac,export='output.mp3')
                             output_box.append(put_file('output.mp3',content=open('output.mp3', 'rb').read(),label='output.mp3'))
 
 
@@ -76,7 +91,7 @@ def webapp():
                                 os.remove (FILE_OUTPUT)
                             with open (FILE_OUTPUT, "wb") as out_file:
                                 out_file.write(data['source'].get('content'))
-                            vid_to_gif(source=FILE_OUTPUT,resize_factor=1,export='output.gif')
+                            vid_to_gif(source=FILE_OUTPUT,resize_factor=resize_fac,export='output.gif')
                             output_box.append(put_file('output.gif',content=open('output.gif', 'rb').read(),label='output.gif'))
 
                 if format['last'] == 'Submit' and format['radio'] == 'avi':
