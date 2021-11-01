@@ -102,19 +102,9 @@ def webapp():
                         out_file.write (data['source'].get ('content'))
                     output_box.append (put_file (FILE_OUTPUT, content=open ('output.avi', 'rb').read (), label='output.avi'))
 
-        # if format['last'] == 'Submit' and format['radio'] == 'gif':
-        #     FILE_OUTPUT = 'output.mp4'
-        #     if os.path.isfile(FILE_OUTPUT):
-        #         os.remove(FILE_OUTPUT)
-        #     with open(FILE_OUTPUT, "wb") as out_file:
-        #         out_file.write(data['source'].get ('content'))
-        #     clip = VideoFileClip(FILE_OUTPUT).resize(1)
-        #     clip.write_gif('output.gif')
-        #     output_box.append(put_file('output.gif', content=open('output.gif', 'rb').read(), label='output.gif'))
-
         # format the user wants from yt video
         if data['url'] != '' and data['source'] == None:
-            if not data['url'].startswith('https://'):
+            if not (data['url'].startswith('https://www.youtube.com/watch?v=') or data['url'].startswith('www.youtube.com/watch?v=') or data['url'].startswith('https://youtu.be/') or data['url'].startswith('http://www.youtube.com/watch?v=')):
                 popup ('Error yt', [
                     put_markdown ("We only support youtube as a website to download things from"),
                     put_buttons (['Ok'], onclick=lambda _: close_popup ())
