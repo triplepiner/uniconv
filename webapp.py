@@ -7,6 +7,7 @@ from convert import vid_to_audio,vid_to_avi,vid_to_gif,vid_to_mp4,yt_to_vid,yt_t
 import os
 from io import BytesIO
 from moviepy.editor import *
+import pytube
 
 
 
@@ -16,16 +17,19 @@ def webapp():
     put_markdown('## Welcome to the club buddy')
     #setup the basic layout
     output_box = output()
-    put_scrollable(output_box, height=300,keep_bottom=True)
-
+    put_scrollable(output_box, height=500,keep_bottom=True)
 
 
     #collect the file/ yt video
     while True:
+
         data = input_group ("File input", [
             file_upload(placeholder="Upload your video file here", multiple=False, max_size='60M',name='source', value=0,accept=['.mp4','.avi','.mov'],),
             input(label='Youtube url',placeholder='Or paste your Youtube url here.', type=URL,name='url'),
             actions (name='cmd', buttons=['Proceed to conversion', {'label': 'Reset', 'type': 'reset'}])
+
+
+
 
 
 
@@ -125,13 +129,12 @@ def webapp():
                     run_js ('window.location.reload()')
 
 
-
+            try:
                 if linker['last'] == 'Submit' and linker['radio'] == 'mp4':
                     if os.path.isfile ('output.mp4'):
                         os.remove ('output.mp4')
                     yt_to_vid(data['url'],export='output')
                     output_box.append(put_file(name='output.mp4',content=open('output.mp4', 'rb').read(),label='download me!'))
-
 
                 if linker['last'] == 'Submit' and linker['radio'] == 'mp3':
 
@@ -140,14 +143,19 @@ def webapp():
                     yt_to_audio(data['url'], export='output')
                     output_box.append (put_file (name='output.mp3', content=open ('output.mp3', 'rb').read (), label='download me!'))
 
+            except pytube.exceptions.VideoUnavailable:
+                popup ('Invalid url', [
+                    put_markdown("You have inputed an invalid youtube url, try again"),
+                    put_buttons (['Ok'], onclick=lambda _: close_popup())
+                ])
 
 # #errors
 
 
         if data['url'] != '' and data['source'] != None:
-            popup ('Error, both formats', [
-                put_markdown ("You can't convert a file and a youtube link at the same time"),
-                put_buttons (['Ok'], onclick=lambda _: close_popup ())
+            popup('Error, both formats', [
+                put_markdown ("You can't convert a file and a youtube link at the same  time"),
+                put_buttons (['Ok'], onclick=lambda _: close_popup())
             ])
 
 
