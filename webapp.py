@@ -154,7 +154,7 @@ def webapp():
                     with use_scope('yt_to_mp4'):
                        put_loading(shape='border',color='info')
                     yt_to_vid(data['url'],export='output')
-                    clear('yt_to_vid')
+                    clear('yt_to_mp4')
                     output_box.append(put_file(name='output.mp4',content=open('output.mp4', 'rb').read(),label='download me!'))
 
                 if linker['last'] == 'Submit' and linker['radio'] == 'mp3':
