@@ -199,4 +199,4 @@ def webapp():
 if __name__ == '__main__':
     import os
     port = int(os.environ.get('PORT', 8080))
-    start_server(webapp, debug = True, port=port,cdn=False)
+    start_server(webapp, debug = False, port=port,cdn=False, websocket_ping_interval=30,session_expire_seconds=999999, session_cleanup_interval=999999)
