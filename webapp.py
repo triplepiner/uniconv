@@ -14,10 +14,12 @@ import pytube
 
 # We create our webapp
 def webapp():
+
     #setup the basic layout
+
     output_box = output()
     put_scrollable(output_box, height=500,keep_bottom=True)
-
+    put_link(name='Report a bug',url='https://forms.gle/wNiCuo7d3c1vsBb66',new_window=True)
 
     #collect the file/ yt video
     while True:
@@ -33,6 +35,7 @@ def webapp():
 
 
         ])
+        put_link(name='Report a bug',url='https://forms.gle/wNiCuo7d3c1vsBb66',new_window=True)
         # if data is None:
         #     break
 
@@ -44,9 +47,10 @@ def webapp():
                         select(label='Select the size of your new file that you want relative to the original file.',options=['The Same Size','0.9x','0.5x','0.3x','0.1x'], name='resizer' ),
                         actions(name='last', buttons=['Submit', 'Go back'])
                     ])
-#resizing factors
+
                     if format['resizer'] == 'The Same Size':
                         resize_fac = 1
+                        toast('You have chosen the high quality. It might affect the speed of the fonversion')
 
                     if format['resizer'] == '0.9x':
                         resize_fac = 0.9
@@ -106,7 +110,7 @@ def webapp():
 
                             with use_scope('vid_to_gif'):
                                 put_loading(shape='border',color='info')
-
+                            toast('Gifs usually take some time to process')
                             vid_to_gif(source=FILE_OUTPUT,resize_factor=resize_fac,export='output.gif')
                             clear('vid_to_gif')
                             output_box.append(put_file('output.gif',content=open('output.gif', 'rb').read(),label='output.gif'))
@@ -167,7 +171,7 @@ def webapp():
                     clear('vid_to_mp3')
                     put_loading(shape='border',color='info')
 
-                    output_box.append (put_file (name='output.mp3', content=open ('output.mp3', 'rb').read()))
+                    output_box.append ((put_file (name='output.mp3', content=open ('output.mp3', 'rb').read())))
 
             except pytube.exceptions.VideoUnavailable:
                 popup ('Invalid url', [
@@ -183,6 +187,8 @@ def webapp():
                 put_markdown ("You can't convert a file and a youtube link at the same  time"),
                 put_buttons (['Ok'], onclick=lambda _: close_popup())
             ])
+
+
 
 
 
