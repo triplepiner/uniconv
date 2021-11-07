@@ -55,9 +55,14 @@ def vid_to_mp4(source,resize_factor,export):
 def vid_to_audio(source,resize_factor,export):
     clip = VideoFileClip(source).resize(resize_factor)
     clip.audio.write_audiofile(export)
-def yt_to_vid(source,export):
+def yt_to_mp4(source,export):
     youtube = pytube.YouTube(source)
     video = youtube.streams.filter(file_extension='mp4').first()
+    video.download (filename = f'{export}.mp4')
+
+def yt_to_avi(source,export):
+    youtube = pytube.YouTube(source)
+    video = youtube.streams.filter(file_extension='avi').first()
     video.download (filename = f'{export}.mp4')
 
 def yt_to_audio(source,export):

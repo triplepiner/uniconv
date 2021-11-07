@@ -3,7 +3,7 @@ from pywebio.output import *
 from pywebio.session import run_async, run_js
 from pywebio.session import download
 from pywebio import start_server
-from convert import vid_to_audio,vid_to_avi,vid_to_gif,vid_to_mp4,yt_to_vid,yt_to_audio
+from convert import vid_to_audio,vid_to_avi,vid_to_gif,vid_to_mp4,yt_to_mp4,yt_to_audio,yt_to_avi
 import os
 from io import BytesIO
 from moviepy.editor import *
@@ -24,9 +24,9 @@ def webapp():
         ],closable=True,size='large')
 
     #setup the basic layout
-    put_row([put_button('How to download the video/audio from youtube',color='dark',onclick=lambda : yt_tutorial()), put_button('How to convert a videofile',color='dark',onclick= lambda : file_tutorial())])
+    put_markdown()
+    put_row([put_button('How to download the video/audio from youtube',color='warning',onclick=lambda : yt_tutorial()), put_button('How to convert a videofile',color='warning',onclick= lambda : file_tutorial())])
     output_box = output()
-    put_row(content=output_box,position=3)
     put_scrollable(output_box, height=500,keep_bottom=True)
     put_link(name='Report a bug',url='https://forms.gle/wNiCuo7d3c1vsBb66',new_window=True)
 
@@ -143,6 +143,7 @@ def webapp():
                 popup ('Error yt', [
                     put_markdown ("We only support youtube as a website to download things from"),
                     put_buttons (['Ok'], onclick=lambda _: close_popup ())
+                    run_js('window.location.reload()')
                 ])
             if data['url'].startswith('https://www.youtube.com/watch?v=') or data['url'].startswith('www.youtube.com/watch?v=') or data['url'].startswith('https://youtu.be/') or data['url'].startswith('http://www.youtube.com/watch?v='):
                 while True:
