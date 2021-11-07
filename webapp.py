@@ -18,8 +18,10 @@ def webapp():
     #setup the basic layout
 
     output_box = output()
+    put_row(content=output_box,position=3)
     put_scrollable(output_box, height=500,keep_bottom=True)
     put_link(name='Report a bug',url='https://forms.gle/wNiCuo7d3c1vsBb66',new_window=True)
+
 
     #collect the file/ yt video
     while True:
@@ -28,14 +30,8 @@ def webapp():
             file_upload(placeholder="Upload your video file here", multiple=False, max_size='60M',name='source', value=0,accept=['.mp4','.avi','.mov'],),
             input(label='Youtube url',placeholder='Or paste your Youtube url here.', type=URL,name='url'),
             actions (name='cmd', buttons=['Proceed to conversion', {'label': 'Reset', 'type': 'reset'}])
-
-
-
-
-
-
         ])
-        put_link(name='Report a bug',url='https://forms.gle/wNiCuo7d3c1vsBb66',new_window=True)
+
         # if data is None:
         #     break
 
@@ -79,6 +75,7 @@ def webapp():
                                 os.remove (FILE_OUTPUT)
                             with use_scope('vid_to_mp4'):
                                 put_loading(shape='border',color='info')
+                                put_text('Your file is being processed')
                             with open (FILE_OUTPUT, "wb") as out_file:
                                 out_file.write(data['source'].get('content'))
 
@@ -94,6 +91,7 @@ def webapp():
                                 out_file.write(data['source'].get('content'))
                             with use_scope('vid_to_audio'):
                                 put_loading(shape='border',color='info')
+                                put_text('Your file is being processed')
                             vid_to_audio(source=FILE_OUTPUT,resize_factor=resize_fac,export='output.mp3')
                             clear('vid_to_audio')
 
@@ -110,6 +108,7 @@ def webapp():
 
                             with use_scope('vid_to_gif'):
                                 put_loading(shape='border',color='info')
+                                put_text('Your file is being processed')
                             toast('Gifs usually take some time to process')
                             vid_to_gif(source=FILE_OUTPUT,resize_factor=resize_fac,export='output.gif')
                             clear('vid_to_gif')
@@ -121,7 +120,8 @@ def webapp():
                         os.remove (FILE_OUTPUT)
 
                     with use_scope('vid_to_avi'):
-                                put_loading(shape='border',color='info')
+                        put_loading(shape='border',color='info')
+                        put_text('Your file is being processed')
 
                     with open (FILE_OUTPUT, "wb") as out_file:
                         out_file.write (data['source'].get ('content'))
@@ -157,6 +157,7 @@ def webapp():
                         os.remove ('output.mp4')
                     with use_scope('yt_to_mp4'):
                        put_loading(shape='border',color='info')
+                       put_text('Your file is being processed')
                     yt_to_vid(data['url'],export='output')
                     clear('yt_to_mp4')
                     output_box.append(put_file(name='output.mp4',content=open('output.mp4', 'rb').read(),label='download me!'))
@@ -167,9 +168,9 @@ def webapp():
                         os.remove ('output.mp3')
                     with use_scope('vid_to_mp3'):
                        put_loading(shape='border',color='info')
+                       put_text('Your file is being processed')
                     yt_to_audio(data['url'], export='output')
                     clear('vid_to_mp3')
-                    put_loading(shape='border',color='info')
 
                     output_box.append ((put_file (name='output.mp3', content=open ('output.mp3', 'rb').read())))
 
@@ -187,19 +188,7 @@ def webapp():
                 put_markdown ("You can't convert a file and a youtube link at the same  time"),
                 put_buttons (['Ok'], onclick=lambda _: close_popup())
             ])
-
-
-
-
-
-
-
-
-
-
 #app launch
-
-
 
 
 if __name__ == '__main__':
