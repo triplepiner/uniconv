@@ -14,9 +14,17 @@ import pytube
 
 # We create our webapp
 def webapp():
+    def file_tutorial():
+        popup(title='Tutorial',content=[
+            put_html('<iframe src="https://scribehow.com/embed/PyWebIO_Application__AxO3BZKGRfeScJIq28BRDw?skipIntro=true" width="100%" height="640" allowfullscreen frameborder="0"></iframe>')
+        ],closable=True,size='large')
+    def yt_tutorial():
+        popup(title='Tutorial',content=[
+            put_html('<iframe src="https://scribehow.com/embed/PyWebIO_Application__kpw-4cuoR2mzGLNPUeO1Zw?skipIntro=true" width="100%" height="640" allowfullscreen frameborder="0"></iframe>')
+        ],closable=True,size='large')
 
     #setup the basic layout
-
+    put_row([put_button('How to download the video/audio from youtube',color='dark',onclick=lambda : yt_tutorial()), put_button('How to convert a videofile',color='dark',onclick= lambda : file_tutorial())])
     output_box = output()
     put_row(content=output_box,position=3)
     put_scrollable(output_box, height=500,keep_bottom=True)
@@ -25,6 +33,7 @@ def webapp():
 
     #collect the file/ yt video
     while True:
+
 #data input
         data = input_group ("File input", [
             file_upload(placeholder="Upload your video file here", multiple=False, max_size='60M',name='source', value=0,accept=['.mp4','.avi','.mov'],),
