@@ -24,7 +24,7 @@ def webapp():
         ],closable=True,size='large')
 
     #setup the basic layout
-    put_markdown()
+
     put_row([put_button('How to download the video/audio from youtube',color='warning',onclick=lambda : yt_tutorial()), put_button('How to convert a videofile',color='warning',onclick= lambda : file_tutorial())])
     output_box = output()
     put_scrollable(output_box, height=500,keep_bottom=True)
@@ -55,7 +55,7 @@ def webapp():
 
                     if format['resizer'] == 'The Same Size':
                         resize_fac = 1
-                        toast('You have chosen the high quality. It might affect the speed of the fonversion')
+                        toast('You have chosen the high quality. It might affect the speed of the сonversion')
 
                     if format['resizer'] == '0.9x':
                         resize_fac = 0.9
@@ -142,7 +142,7 @@ def webapp():
             if not (data['url'].startswith('https://www.youtube.com/watch?v=') or data['url'].startswith('www.youtube.com/watch?v=') or data['url'].startswith('https://youtu.be/') or data['url'].startswith('http://www.youtube.com/watch?v=')):
                 popup ('Error yt', [
                     put_markdown ("We only support youtube as a website to download things from"),
-                    put_buttons (['Ok'], onclick=lambda _: close_popup ())
+                    put_buttons (['Ok'], onclick=lambda _: close_popup ()),
                     run_js('window.location.reload()')
                 ])
             if data['url'].startswith('https://www.youtube.com/watch?v=') or data['url'].startswith('www.youtube.com/watch?v=') or data['url'].startswith('https://youtu.be/') or data['url'].startswith('http://www.youtube.com/watch?v='):

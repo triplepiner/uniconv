@@ -63,7 +63,7 @@ def yt_to_mp4(source,export):
 def yt_to_avi(source,export):
     youtube = pytube.YouTube(source)
     video = youtube.streams.filter(file_extension='avi').first()
-    video.download (filename = f'{export}.mp4')
+    video.download (filename = f'{export}.avi')
 
 def yt_to_audio(source,export):
     youtube = pytube.YouTube(source)
@@ -78,12 +78,6 @@ def yt_to_audio(source,export):
 
 
 
-
-
-
-# myfile = Path("output.zip")
-# if len(os.listdir('/Users/makarulesov/PycharmProjects/file_converter/output')) != 0 and not myfile.is_file():
-#     shutil.make_archive ('output', 'zip', path)
 
 
 
