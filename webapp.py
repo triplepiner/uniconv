@@ -3,7 +3,7 @@ from pywebio.output import *
 from pywebio.session import run_async, run_js
 from pywebio.session import download
 from pywebio import start_server
-from convert import vid_to_audio,vid_to_avi,vid_to_gif,vid_to_mp4,yt_to_mp4,yt_to_audio,yt_to_avi
+from convert import vid_to_audio,vid_to_avi,vid_to_gif,vid_to_mp4,yt_to_mp4,yt_to_audio
 import os
 from io import BytesIO
 from moviepy.editor import *
@@ -24,7 +24,6 @@ def webapp():
         ],closable=True,size='large')
 
     #setup the basic layout
-
     put_row([put_button('How to download the video/audio from youtube',color='warning',onclick=lambda : yt_tutorial()), put_button('How to convert a videofile',color='warning',onclick= lambda : file_tutorial())])
     output_box = output()
     put_scrollable(output_box, height=500,keep_bottom=True)
@@ -55,7 +54,7 @@ def webapp():
 
                     if format['resizer'] == 'The Same Size':
                         resize_fac = 1
-                        toast('You have chosen the high quality. It might affect the speed of the сonversion')
+                        toast('You have chosen the high quality. It might affect the speed of the сonversion',duration=15,color='#FF00FF')
 
                     if format['resizer'] == '0.9x':
                         resize_fac = 0.9
@@ -118,7 +117,7 @@ def webapp():
                             with use_scope('vid_to_gif'):
                                 put_loading(shape='border',color='info')
                                 put_text('Your file is being processed')
-                            toast('Gifs usually take some time to process')
+                            toast('Gifs usually take some time to process',duration=15,color='#FF00FF')
                             vid_to_gif(source=FILE_OUTPUT,resize_factor=resize_fac,export='output.gif')
                             clear('vid_to_gif')
                             output_box.append(put_file('output.gif',content=open('output.gif', 'rb').read(),label='output.gif'))
@@ -183,6 +182,9 @@ def webapp():
                     clear('vid_to_mp3')
 
                     output_box.append ((put_file (name='output.mp3', content=open ('output.mp3', 'rb').read())))
+
+
+
 
             except pytube.exceptions.VideoUnavailable:
                 popup ('Invalid url', [

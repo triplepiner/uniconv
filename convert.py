@@ -60,11 +60,6 @@ def yt_to_mp4(source,export):
     video = youtube.streams.filter(file_extension='mp4').first()
     video.download (filename = f'{export}.mp4')
 
-def yt_to_avi(source,export):
-    youtube = pytube.YouTube(source)
-    video = youtube.streams.filter(file_extension='avi').first()
-    video.download (filename = f'{export}.avi')
-
 def yt_to_audio(source,export):
     youtube = pytube.YouTube(source)
     video = youtube.streams.first()
