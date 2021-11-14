@@ -3,7 +3,7 @@ from pywebio.output import *
 from pywebio.session import run_async, run_js
 from pywebio.session import download
 from pywebio import start_server
-from convert import vid_to_audio,vid_to_avi,vid_to_gif,vid_to_mp4,yt_to_mp4,yt_to_audio
+from convert import vid_to_audio,vid_to_avi,vid_to_gif,vid_to_mp4,yt_to_mp4,yt_to_audio, yt_videotitle
 import os
 from io import BytesIO
 import moviepy.editor as mp
@@ -42,7 +42,7 @@ def webapp():
         popup(title='What is it?',content =[put_image(open('screenshot (2).png', 'rb').read())],size='large',closable=True)
 
     #setup the basic layout
-    toast(content = 'Click here to learn how this app works!',duration=7,onclick=lambda : put_explainer())
+    toast(content = 'Click here to learn how this app works!',duration=0,onclick=lambda : put_explainer())
     put_row([put_button('How to download the video/audio from youtube',color='warning',onclick=lambda : yt_tutorial()), put_button('How to convert a videofile',color='warning',onclick= lambda : file_tutorial())])
     output_box = output()
     put_scrollable(output_box, height=500,keep_bottom=True)
@@ -73,7 +73,7 @@ def webapp():
 
                     if format['resizer'] == 'The Same Size':
                         resize_fac = 1
-                        toast('You have chosen the high quality. It might affect the speed of the сonversion',duration=7,color='#FF00FF')
+                        toast('You have chosen the high quality. It might affect the speed of the сonversion',duration=0,color='#FF00FF')
 
                     if format['resizer'] == '0.9x':
                         resize_fac = 0.9
@@ -137,7 +137,7 @@ def webapp():
 
                             with use_scope('vid_to_gif'):
                                  put_row([put_loading(shape='border',color='info'),put_text('Your file is being processed')])
-                            toast('Gifs usually take some time to process',duration=7,color='#FF00FF')
+                            toast('Gifs usually take some time to process',duration=0,color='#FF00FF')
                             vid_to_gif(source=FILE_OUTPUT,resize_factor=resize_fac,export='output.gif')
                             clear('vid_to_gif')
                             output_box.append(put_file('output.gif',content=open('output.gif', 'rb').read(),label='output.gif'))
@@ -169,6 +169,7 @@ def webapp():
                     run_js('window.location.reload()')
                 ])
             if data['url'].startswith('https://www.youtube.com/watch?v=') or data['url'].startswith('www.youtube.com/watch?v=') or data['url'].startswith('https://youtu.be/') or data['url'].startswith('http://www.youtube.com/watch?v='):
+                yt_title = yt_videotitle(data['url'])
                 while True:
                     linker = input_group ("Choose your export format", [
                         radio (label='Export format', options=['mp4', 'mp3'], required=False,
@@ -186,24 +187,24 @@ def webapp():
 #check if the yt url is valid
             try:
                 if linker['last'] == 'Submit' and linker['radio'] == 'mp4':
-                    if os.path.isfile ('output.mp4'):
-                        os.remove ('output.mp4')
+                    if os.path.isfile (f'{yt_title}.mp4'):
+                        os.remove (f'{yt_title}.mp4')
                     with use_scope('yt_to_mp4'):
                         put_row([put_loading(shape='border',color='info'),put_text('Your file is being processed')])
-                    yt_to_vid(data['url'],export='output')
+                    yt_to_mp4(data['url'],export=yt_title)
                     clear('yt_to_mp4')
-                    output_box.append(put_file(name='output.mp4',content=open('output.mp4', 'rb').read(),label='download me!'))
+                    output_box.append(put_file(name=f'{yt_title}.mp4',content=open(f'{yt_title}.mp4', 'rb').read()))
 
                 if linker['last'] == 'Submit' and linker['radio'] == 'mp3':
 
-                    if os.path.isfile ('output.mp3'):
-                        os.remove ('output.mp3')
+                    if os.path.isfile (f'{yt_title}.mp3'):
+                        os.remove (f'{yt_title}.mp3')
                     with use_scope('vid_to_mp3'):
                         put_row([put_loading(shape='border',color='info'),put_text('Your file is being processed')])
-                    yt_to_audio(data['url'], export='output')
+                    yt_to_audio(data['url'], export=yt_title)
                     clear('vid_to_mp3')
 
-                    output_box.append ((put_file (name='output.mp3', content=open ('output.mp3', 'rb').read())))
+                    output_box.append ((put_file (name=f'{yt_title}.mp3', content=open (f'{yt_title}.mp3', 'rb').read())))
 
 
 

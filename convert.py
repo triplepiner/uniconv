@@ -70,6 +70,12 @@ def yt_to_audio(source,export):
     clip.audio.write_audiofile(mp3_file)
     os.remove(mp4_file)
 
+def yt_videotitle(source):
+    yt = pytube.YouTube(source)
+    x = yt.streams[0].title
+    return x
+
+
 
 
 
