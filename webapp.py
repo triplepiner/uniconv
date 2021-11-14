@@ -6,7 +6,7 @@ from pywebio import start_server
 from convert import vid_to_audio,vid_to_avi,vid_to_gif,vid_to_mp4,yt_to_mp4,yt_to_audio
 import os
 from io import BytesIO
-from moviepy.editor import *
+import moviepy.editor as mp
 import pytube
 import pywebio
 
@@ -22,7 +22,13 @@ pywebio.config(title="Uniconv")
 # We create our webapp
 def webapp():
 
-    put_image(open('logo.png', 'rb').read())
+    image_url="https://res.cloudinary.com/dj9urm5ic/image/upload/v1636898954/logo_3_lehi1k.png"
+    run_js("""
+    $('#favicon32,#favicon16').remove();
+    $('head').append('<link rel="icon" type="image/png" href="%s">')
+    """ % image_url)
+
+
     def file_tutorial():
         popup(title='Tutorial',content=[
             put_html('<iframe src="https://scribehow.com/embed/PyWebIO_Application__AxO3BZKGRfeScJIq28BRDw?skipIntro=true" width="100%" height="640" allowfullscreen frameborder="0"></iframe>')
@@ -95,10 +101,13 @@ def webapp():
                             if os.path.isfile (FILE_OUTPUT):
                                 os.remove (FILE_OUTPUT)
                             with use_scope('vid_to_mp4'):
-                                put_loading(shape='border',color='info')
-                                put_text('Your file is being processed')
+                                put_row([put_loading(shape='border',color='info'),put_text('Your file is being processed')])
+
                             with open (FILE_OUTPUT, "wb") as out_file:
                                 out_file.write(data['source'].get('content'))
+                            clip = mp.VideoFileClip(FILE_OUTPUT)
+                            clip_resized = clip.resize(resize_fac)
+                            clip_resized.write_videofile(FILE_OUTPUT)
 
                             clear('vid_to_mp4')
                             output_box.append(put_file(FILE_OUTPUT,content=open('output.mp4', 'rb').read(),label='output.mp4'))
@@ -111,8 +120,7 @@ def webapp():
                             with open (FILE_OUTPUT, "wb") as out_file:
                                 out_file.write(data['source'].get('content'))
                             with use_scope('vid_to_audio'):
-                                put_loading(shape='border',color='info')
-                                put_text('Your file is being processed')
+                                 put_row([put_loading(shape='border',color='info'),put_text('Your file is being processed')])
                             vid_to_audio(source=FILE_OUTPUT,resize_factor=resize_fac,export='output.mp3')
                             clear('vid_to_audio')
 
@@ -128,8 +136,7 @@ def webapp():
                                 out_file.write(data['source'].get('content'))
 
                             with use_scope('vid_to_gif'):
-                                put_loading(shape='border',color='info')
-                                put_text('Your file is being processed')
+                                 put_row([put_loading(shape='border',color='info'),put_text('Your file is being processed')])
                             toast('Gifs usually take some time to process',duration=7,color='#FF00FF')
                             vid_to_gif(source=FILE_OUTPUT,resize_factor=resize_fac,export='output.gif')
                             clear('vid_to_gif')
@@ -141,11 +148,15 @@ def webapp():
                         os.remove (FILE_OUTPUT)
 
                     with use_scope('vid_to_avi'):
-                        put_loading(shape='border',color='info')
-                        put_text('Your file is being processed')
+                         put_row([put_loading(shape='border',color='info'),put_text('Your file is being processed')])
 
                     with open (FILE_OUTPUT, "wb") as out_file:
                         out_file.write (data['source'].get ('content'))
+
+                    clip = mp.VideoFileClip(FILE_OUTPUT)
+                    clip_resized = clip.resize(resize_fac)
+                    clip_resized.write_videofile(FILE_OUTPUT)
+
                     clear('vid_to_avi')
                     output_box.append (put_file (FILE_OUTPUT, content=open ('output.avi', 'rb').read (), label='output.avi'))
 
@@ -178,8 +189,7 @@ def webapp():
                     if os.path.isfile ('output.mp4'):
                         os.remove ('output.mp4')
                     with use_scope('yt_to_mp4'):
-                       put_loading(shape='border',color='info')
-                       put_text('Your file is being processed')
+                        put_row([put_loading(shape='border',color='info'),put_text('Your file is being processed')])
                     yt_to_vid(data['url'],export='output')
                     clear('yt_to_mp4')
                     output_box.append(put_file(name='output.mp4',content=open('output.mp4', 'rb').read(),label='download me!'))
@@ -189,8 +199,7 @@ def webapp():
                     if os.path.isfile ('output.mp3'):
                         os.remove ('output.mp3')
                     with use_scope('vid_to_mp3'):
-                       put_loading(shape='border',color='info')
-                       put_text('Your file is being processed')
+                        put_row([put_loading(shape='border',color='info'),put_text('Your file is being processed')])
                     yt_to_audio(data['url'], export='output')
                     clear('vid_to_mp3')
 
