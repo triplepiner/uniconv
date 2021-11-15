@@ -1,6 +1,6 @@
 from pywebio.input import *
 from pywebio.output import *
-from pywebio.session import run_async, run_js
+from pywebio.session import run_async, run_js,set_env
 from pywebio.session import download
 from pywebio import start_server
 from convert import vid_to_audio,vid_to_avi,vid_to_gif,vid_to_mp4,yt_to_mp4,yt_to_audio, yt_videotitle
@@ -9,6 +9,7 @@ from io import BytesIO
 import moviepy.editor as mp
 import pytube
 import pywebio
+from pywebio import config
 
 
 
@@ -16,12 +17,13 @@ import pywebio
 
 
 
-pywebio.config(title="Uniconv")
+
+@config(title="Uniconv",css_style='.pywebio{padding: 0;}')
 
 
 # We create our webapp
 def webapp():
-
+    set_env(output_max_width='110%')
     image_url="https://res.cloudinary.com/dj9urm5ic/image/upload/v1636898954/logo_3_lehi1k.png"
     run_js("""
     $('#favicon32,#favicon16').remove();
@@ -42,8 +44,60 @@ def webapp():
         popup(title='What is it?',content =[put_image(open('screenshot (2).png', 'rb').read())],size='large',closable=True)
 
     #setup the basic layout
+    put_html("""
+    <style type="text/css">
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      .header {
+        position: sticky;
+        top: 0;
+        min-height: 80px;
+        width: 100%;
+        background-color: #2400ff;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .logoBox {
+        padding-left: 2vw;
+      }
+      .coffee {
+        padding-right: 10px;
+
+      }
+      .header img {
+        max-height: 80px;
+        height: 50px;
+        background-color: inherit !important;
+      }
+      .coffeeImg {
+        height: 40px!important;
+      }
+    </style>
+    <header class="header">
+      <div class="logoBox">
+        <img src="https://res.cloudinary.com/dj9urm5ic/image/upload/v1636980992/logoUniConv_nn38tx.svg" alt="Logo Uni Conv" />
+      </div>
+      <div class="ph">
+        <a href="" target="_blank"
+          ><img src="https://res.cloudinary.com/dj9urm5ic/image/upload/v1636980992/ProductHuntButton_nowhh5.png" alt="Product Hunt Link"
+        /></a>
+      </div>
+      <div class="coffee">
+        <a href="https://www.buymeacoffee.com/" target="_blank"
+          ><img
+            class="coffeeImg"
+            src="https://res.cloudinary.com/dj9urm5ic/image/upload/v1636980993/yellow-button_qxutbf.png"
+            alt="Buy Me A Coffee Link"
+        /></a>
+      </div>
+    </header>
+
+    """)
     toast(content = 'Click here to learn how this app works!',duration=0,onclick=lambda : put_explainer())
-    put_row([put_button('How to download the video/audio from youtube',color='warning',onclick=lambda : yt_tutorial()), put_button('How to convert a videofile',color='warning',onclick= lambda : file_tutorial())])
+    #put_row([put_button('How to download the video/audio from youtube',color='warning',onclick=lambda : yt_tutorial()), put_button('How to convert a videofile',color='warning',onclick= lambda : file_tutorial())])
     output_box = output()
     put_scrollable(output_box, height=500,keep_bottom=True)
     put_link(name='Report a bug',url='https://forms.gle/wNiCuo7d3c1vsBb66',new_window=True)
@@ -229,4 +283,4 @@ def webapp():
 if __name__ == '__main__':
     import os
     port = int(os.environ.get('PORT', 8080))
-    start_server(webapp, debug = False, port=port,cdn=False, websocket_ping_interval=30,session_expire_seconds=999999, session_cleanup_interval=999999)
+    start_server(webapp, debug = False, port=port, websocket_ping_interval=30,session_expire_seconds=999999, session_cleanup_interval=999999)
