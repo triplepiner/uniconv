@@ -18,7 +18,7 @@ from pywebio import config
 
 
 
-@config(title="Uniconv",css_style='.pywebio{padding: 0;}')
+@config(title="Uniconv")
 
 
 # We create our webapp
@@ -30,29 +30,18 @@ def webapp():
     $('head').append('<link rel="icon" type="image/png" href="%s">')
     """ % image_url)
 
-
-    def file_tutorial():
-        popup(title='Tutorial',content=[
-            put_html('<iframe src="https://scribehow.com/embed/PyWebIO_Application__AxO3BZKGRfeScJIq28BRDw?skipIntro=true" width="100%" height="640" allowfullscreen frameborder="0"></iframe>')
-        ],closable=True,size='large')
-    def yt_tutorial():
-        popup(title='Tutorial',content=[
-            put_html('<iframe src="https://scribehow.com/embed/PyWebIO_Application__kpw-4cuoR2mzGLNPUeO1Zw?skipIntro=true" width="100%" height="640" allowfullscreen frameborder="0"></iframe>')
-        ],closable=True,size='large')
-
-    def put_explainer():
-        popup(title='What is it?',content =[put_image(open('screenshot (2).png', 'rb').read())],size='large',closable=True)
-
-    #setup the basic layout
     put_html("""
     <style type="text/css">
+      .pywebio { padding-top: 0; }
       body {
         margin: 0;
-        padding: 0;
+        padding-top: 80px;
       }
       .header {
-        position: sticky;
+        position: absolute;
         top: 0;
+        left: 0;
+        right: 0;
         min-height: 80px;
         width: 100%;
         background-color: #2400ff;
@@ -96,6 +85,22 @@ def webapp():
     </header>
 
     """)
+
+
+    def file_tutorial():
+        popup(title='Tutorial',content=[
+            put_html('<iframe src="https://scribehow.com/embed/PyWebIO_Application__AxO3BZKGRfeScJIq28BRDw?skipIntro=true" width="100%" height="640" allowfullscreen frameborder="0"></iframe>')
+        ],closable=True,size='large')
+    def yt_tutorial():
+        popup(title='Tutorial',content=[
+            put_html('<iframe src="https://scribehow.com/embed/PyWebIO_Application__kpw-4cuoR2mzGLNPUeO1Zw?skipIntro=true" width="100%" height="640" allowfullscreen frameborder="0"></iframe>')
+        ],closable=True,size='large')
+
+    def put_explainer():
+        popup(title='What is it?',content =[put_image(open('screenshot (2).png', 'rb').read())],size='large',closable=True)
+
+    #setup the basic layout
+
     toast(content = 'Click here to learn how this app works!',duration=0,onclick=lambda : put_explainer())
     #put_row([put_button('How to download the video/audio from youtube',color='warning',onclick=lambda : yt_tutorial()), put_button('How to convert a videofile',color='warning',onclick= lambda : file_tutorial())])
     output_box = output()
