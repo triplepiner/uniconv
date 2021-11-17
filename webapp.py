@@ -24,7 +24,7 @@ from pywebio import config
 # We create our webapp
 def webapp():
     set_env(output_max_width='110%')
-    image_url="https://res.cloudinary.com/dj9urm5ic/image/upload/v1636898954/logo_3_lehi1k.png"
+    image_url="https://res.cloudinary.com/dj9urm5ic/image/upload/v1637080520/logo_7_biwhaz.png"
     run_js("""
     $('#favicon32,#favicon16').remove();
     $('head').append('<link rel="icon" type="image/png" href="%s">')
@@ -54,21 +54,30 @@ def webapp():
       }
       .coffee {
         padding-right: 10px;
+        height: 80px;
 
       }
       .header img {
         max-height: 80px;
-        height: 50px;
         background-color: inherit !important;
       }
       .coffeeImg {
-        height: 40px!important;
+        height: 80px!important;
+      }
+
+      .buttonWrap{
+        display:flex;
+        padding-top: 4px;
+      }
+      .ph{
+        height: 60px;
       }
     </style>
     <header class="header">
       <div class="logoBox">
-        <img src="https://res.cloudinary.com/dj9urm5ic/image/upload/v1636980992/logoUniConv_nn38tx.svg" alt="Logo Uni Conv" />
+        <img src="https://res.cloudinary.com/dj9urm5ic/image/upload/v1637080521/logo_8_p4ww0l.png" />
       </div>
+     <div class="buttonWrap">
       <div class="ph">
         <a href="" target="_blank"
           ><img src="https://res.cloudinary.com/dj9urm5ic/image/upload/v1636980992/ProductHuntButton_nowhh5.png" alt="Product Hunt Link"
@@ -78,10 +87,11 @@ def webapp():
         <a href="https://www.buymeacoffee.com/" target="_blank"
           ><img
             class="coffeeImg"
-            src="https://res.cloudinary.com/dj9urm5ic/image/upload/v1636980993/yellow-button_qxutbf.png"
+            src="https://res.cloudinary.com/dj9urm5ic/image/upload/v1637084121/ProductHuntButton_nowhh5_1_ubjiwb.png"
             alt="Buy Me A Coffee Link"
         /></a>
       </div>
+     </div>
     </header>
 
     """)
