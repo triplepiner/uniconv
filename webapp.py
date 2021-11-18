@@ -206,7 +206,7 @@ def webapp():
 
                             with use_scope('vid_to_gif'):
                                  put_row([put_loading(shape='border',color='info'),put_text('Your file is being processed')])
-                            toast('Gifs usually take some time to process',duration=0,,color='warn')
+                            toast('Gifs usually take some time to process',duration=0,color='warn')
                             vid_to_gif(source=FILE_OUTPUT,resize_factor=resize_fac,export='output.gif')
                             clear('vid_to_gif')
                             output_box.append(put_file('output.gif',content=open('output.gif', 'rb').read(),label='output.gif'))
