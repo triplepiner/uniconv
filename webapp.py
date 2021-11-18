@@ -142,7 +142,7 @@ def webapp():
 
                     if format['resizer'] == 'The Same Size':
                         resize_fac = 1
-                        toast('You have chosen the high quality. It might affect the speed of the сonversion',duration=0,,color='warn')
+                        toast('You have chosen the high quality. It might affect the speed of the сonversion',duration=0,color='warn')
 
                     if format['resizer'] == '0.9x':
                         resize_fac = 0.9
