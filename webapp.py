@@ -38,7 +38,7 @@ def webapp():
         padding-top: 80px;
       }
       .header {
-        position: absolute;
+        position: fixed;
         top: 0;
         left: 0;
         right: 0;
@@ -111,7 +111,7 @@ def webapp():
 
     #setup the basic layout
 
-    toast(content = 'Click here to learn how this app works!',duration=0,onclick=lambda : put_explainer())
+    toast(content = 'Click here to learn how this app works!',duration=0,color='warn',onclick=lambda : put_explainer())
     #put_row([put_button('How to download the video/audio from youtube',color='warning',onclick=lambda : yt_tutorial()), put_button('How to convert a videofile',color='warning',onclick= lambda : file_tutorial())])
     output_box = output()
     put_scrollable(output_box, height=500,keep_bottom=True)
@@ -142,7 +142,7 @@ def webapp():
 
                     if format['resizer'] == 'The Same Size':
                         resize_fac = 1
-                        toast('You have chosen the high quality. It might affect the speed of the сonversion',duration=0,color='#FF00FF')
+                        toast('You have chosen the high quality. It might affect the speed of the сonversion',duration=0,,color='warn')
 
                     if format['resizer'] == '0.9x':
                         resize_fac = 0.9
@@ -206,7 +206,7 @@ def webapp():
 
                             with use_scope('vid_to_gif'):
                                  put_row([put_loading(shape='border',color='info'),put_text('Your file is being processed')])
-                            toast('Gifs usually take some time to process',duration=0,color='#FF00FF')
+                            toast('Gifs usually take some time to process',duration=0,,color='warn')
                             vid_to_gif(source=FILE_OUTPUT,resize_factor=resize_fac,export='output.gif')
                             clear('vid_to_gif')
                             output_box.append(put_file('output.gif',content=open('output.gif', 'rb').read(),label='output.gif'))
