@@ -1,13 +1,9 @@
 from pywebio.input import *
 from pywebio.output import *
 from pywebio.session import run_async, run_js,set_env
-from pywebio.session import download
 from pywebio import start_server
 from convert import vid_to_audio,vid_to_avi,vid_to_gif,vid_to_mp4,yt_to_mp4,yt_to_audio, yt_videotitle
 import os
-from io import BytesIO
-import moviepy.editor as mp
-import pytube
 import pywebio
 from pywebio import config
 
@@ -55,7 +51,6 @@ def webapp():
       .coffee {
         padding-right: 10px;
         height: 80px;
-
       }
       .header img {
         max-height: 80px;
@@ -64,7 +59,6 @@ def webapp():
       .coffeeImg {
         height: 80px!important;
       }
-
       .buttonWrap{
         display:flex;
         padding-top: 4px;
@@ -84,24 +78,20 @@ def webapp():
         /></a>
       </div>
       <div class="coffee">
-        <a href="https://www.buymeacoffee.com/" target="_blank"
+        <a href="https://www.patreon.com/bePatron?u=10145585" target="_blank"
           ><img
             class="coffeeImg"
-            src="https://res.cloudinary.com/dj9urm5ic/image/upload/v1637084121/ProductHuntButton_nowhh5_1_ubjiwb.png"
+            src="https://res.cloudinary.com/dj9urm5ic/image/upload/v1637682600/ProductHuntButton_nowhh5_2_.png_xzmrcl.png"
             alt="Buy Me A Coffee Link"
         /></a>
       </div>
      </div>
     </header>
-
-
-
         <!-- Yandex.Metrika counter -->
     <script type="text/javascript" >
        (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
        m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
        (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
-
        ym(86550879, "init", {
             clickmap:true,
             trackLinks:true,
@@ -111,7 +101,6 @@ def webapp():
     </script>
     <noscript><div><img src="https://mc.yandex.ru/watch/86550879" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
     <!-- /Yandex.Metrika counter -->
-
     """)
 
 
@@ -131,9 +120,14 @@ def webapp():
 
     toast(content = 'Click here to learn how this app works!',duration=0,color='warn',onclick=lambda : put_explainer())
     #put_row([put_button('How to download the video/audio from youtube',color='warning',onclick=lambda : yt_tutorial()), put_button('How to convert a videofile',color='warning',onclick= lambda : file_tutorial())])
+    put_text('''
+            ''')
     output_box = output()
     put_scrollable(output_box, height=500,keep_bottom=True)
     put_link(name='Report a bug',url='https://forms.gle/wNiCuo7d3c1vsBb66',new_window=True)
+
+    set_scope(name='output_md')
+    output_box.append(put_markdown('> Hey there! Your output files will appear here \U0001F916',scope='output_md'))
 
 
     #collect the file/ yt video
@@ -141,38 +135,27 @@ def webapp():
 
 #data input
         data = input_group ("File input", [
-            file_upload(placeholder="Upload your video file here", multiple=False, max_size='60M',name='source', value=0,accept=['.mp4','.avi','.mov'],),
+            file_upload(placeholder="Upload your video file here", multiple=False, max_size='100M',name='source', value=0,accept=['.mp4','.avi','.mov'],),
             input(label='Youtube url',placeholder='Or paste your Youtube url here.', type=URL,name='url'),
             actions (name='cmd', buttons=['Proceed to conversion', {'label': 'Reset', 'type': 'reset'}])
         ])
 
         # if data is None:
         #     break
+        file__name = os.path.splitext(data['source'].get('filename'))[0]
 
         if data['source'] != None:
             if data['source'].get('filename').lower().endswith('mp4')==True or data['source'].get('filename').lower().endswith('avi') or data['source'].get('filename').lower().endswith('mov') == True and data['url'] == '':
                 while True:
                     format = input_group("Choose your export format",[
                         radio(label='Export format',options=['mp4','avi','gif','mp3'],required=False, name='radio'),
-                        select(label='Select the size of your new file that you want relative to the original file.',options=['The Same Size','0.9x','0.5x','0.3x','0.1x'], name='resizer' ),
                         actions(name='last', buttons=['Submit', 'Go back'])
                     ])
 
-                    if format['resizer'] == 'The Same Size':
-                        resize_fac = 1
-                        toast('You have chosen the high quality. It might affect the speed of the сonversion',duration=0,color='warn')
+                    resize_fac = 1
+                    toast('It can take some time to process your file, be patient ',duration=0,color='warn')
 
-                    if format['resizer'] == '0.9x':
-                        resize_fac = 0.9
 
-                    if format['resizer'] == '0.5x':
-                        resize_fac = 0.5
-
-                    if format['resizer'] == '0.3x':
-                        resize_fac = 0.3
-
-                    if format['resizer'] == '0.1x':
-                        resize_fac = 0.1
 
 
                     if format['last'] == 'Submit' and format['radio'] == None:
@@ -184,7 +167,8 @@ def webapp():
                     if format['radio'] != None:
                         break
                 if format['last'] == 'Submit' and format['radio'] == 'mp4':
-                            FILE_OUTPUT = 'output.mp4'
+
+                            FILE_OUTPUT = f'{file__name}.mp4'
                             if os.path.isfile (FILE_OUTPUT):
                                 os.remove (FILE_OUTPUT)
                             with use_scope('vid_to_mp4'):
@@ -192,31 +176,30 @@ def webapp():
 
                             with open (FILE_OUTPUT, "wb") as out_file:
                                 out_file.write(data['source'].get('content'))
-                            clip = mp.VideoFileClip(FILE_OUTPUT)
-                            clip_resized = clip.resize(resize_fac)
-                            clip_resized.write_videofile(FILE_OUTPUT)
 
                             clear('vid_to_mp4')
-                            output_box.append(put_file(FILE_OUTPUT,content=open('output.mp4', 'rb').read(),label='output.mp4'))
+                            output_box.append(put_file(FILE_OUTPUT,content=open(f'{file__name}.mp4', 'rb').read(),label=f'{file__name}.mp4'))
 
 
                 if format['last'] == 'Submit' and format['radio'] == 'mp3':
-                            FILE_OUTPUT = 'output.mp4'
+
+                            FILE_OUTPUT = f'{file__name}.mp4'
                             if os.path.isfile (FILE_OUTPUT):
                                 os.remove (FILE_OUTPUT)
                             with open (FILE_OUTPUT, "wb") as out_file:
                                 out_file.write(data['source'].get('content'))
                             with use_scope('vid_to_audio'):
                                  put_row([put_loading(shape='border',color='info'),put_text('Your file is being processed')])
-                            vid_to_audio(source=FILE_OUTPUT,resize_factor=resize_fac,export='output.mp3')
+                            vid_to_audio(source=FILE_OUTPUT,resize_factor=resize_fac,export=f'{file__name}.mp3')
                             clear('vid_to_audio')
 
 
-                            output_box.append(put_file('output.mp3',content=open('output.mp3', 'rb').read(),label='output.mp3'))
+                            output_box.append(put_file(f'{file__name}.mp3',content=open(f'{file__name}.mp3', 'rb').read(),label=f'{file__name}.mp3'))
 
 
                 if format['last'] == 'Submit' and format['radio'] == 'gif':
-                            FILE_OUTPUT = 'output.mp4'
+
+                            FILE_OUTPUT = f'{file__name}.mp4'
                             if os.path.isfile (FILE_OUTPUT):
                                 os.remove (FILE_OUTPUT)
                             with open (FILE_OUTPUT, "wb") as out_file:
@@ -225,12 +208,13 @@ def webapp():
                             with use_scope('vid_to_gif'):
                                  put_row([put_loading(shape='border',color='info'),put_text('Your file is being processed')])
                             toast('Gifs usually take some time to process',duration=0,color='warn')
-                            vid_to_gif(source=FILE_OUTPUT,resize_factor=resize_fac,export='output.gif')
+                            vid_to_gif(source=FILE_OUTPUT,resize_factor=resize_fac,export=f'{file__name}.gif')
                             clear('vid_to_gif')
-                            output_box.append(put_file('output.gif',content=open('output.gif', 'rb').read(),label='output.gif'))
+                            output_box.append(put_file(f'{file__name}.gif',content=open(f'{file__name}.gif', 'rb').read(),label=f'{file__name}.gif'))
 
                 if format['last'] == 'Submit' and format['radio'] == 'avi':
-                    FILE_OUTPUT = 'output.avi'
+
+                    FILE_OUTPUT = f'{file__name}.avi'
                     if os.path.isfile (FILE_OUTPUT):
                         os.remove (FILE_OUTPUT)
 
@@ -240,12 +224,9 @@ def webapp():
                     with open (FILE_OUTPUT, "wb") as out_file:
                         out_file.write (data['source'].get ('content'))
 
-                    clip = mp.VideoFileClip(FILE_OUTPUT)
-                    clip_resized = clip.resize(resize_fac)
-                    clip_resized.write_videofile(FILE_OUTPUT)
 
                     clear('vid_to_avi')
-                    output_box.append (put_file (FILE_OUTPUT, content=open ('output.avi', 'rb').read (), label='output.avi'))
+                    output_box.append (put_file (FILE_OUTPUT, content=open (f'{file__name}.avi', 'rb').read (), label=f'{file__name}.avi'))
 
         # format the user wants from yt video
         if data['url'] != '' and data['source'] == None:
@@ -259,8 +240,7 @@ def webapp():
                 yt_title = yt_videotitle(data['url'])
                 while True:
                     linker = input_group ("Choose your export format", [
-                        radio (label='Export format', options=['mp4', 'mp3'], required=False,
-                               name='radio'),
+                        radio (label='Export format', options=['mp4', 'mp3'], required=False,name='radio'),
                         actions (name='last', buttons=['Submit', 'Go back'])
                     ])
                     if linker['radio'] != None:
@@ -270,10 +250,11 @@ def webapp():
 
                 if linker['last'] == 'Go back':
                     run_js ('window.location.reload()')
-#random comment to check git competability
+
 #check if the yt url is valid
             try:
                 if linker['last'] == 'Submit' and linker['radio'] == 'mp4':
+
                     if os.path.isfile (f'{yt_title}.mp4'):
                         os.remove (f'{yt_title}.mp4')
                     with use_scope('yt_to_mp4'):
