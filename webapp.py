@@ -101,17 +101,21 @@ def webapp():
     </script>
     <noscript><div><img src="https://mc.yandex.ru/watch/86550879" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
     <!-- /Yandex.Metrika counter -->
+
+
+
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-F6BJSF52PD"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-F6BJSF52PD');
+    </script>
     """)
 
 
-    def file_tutorial():
-        popup(title='Tutorial',content=[
-            put_html('<iframe src="https://scribehow.com/embed/PyWebIO_Application__AxO3BZKGRfeScJIq28BRDw?skipIntro=true" width="100%" height="640" allowfullscreen frameborder="0"></iframe>')
-        ],closable=True,size='large')
-    def yt_tutorial():
-        popup(title='Tutorial',content=[
-            put_html('<iframe src="https://scribehow.com/embed/PyWebIO_Application__kpw-4cuoR2mzGLNPUeO1Zw?skipIntro=true" width="100%" height="640" allowfullscreen frameborder="0"></iframe>')
-        ],closable=True,size='large')
 
     def put_explainer():
         popup(title='What is it?',content =[put_image(open('screenshot (2).png', 'rb').read())],size='large',closable=True)
@@ -119,11 +123,10 @@ def webapp():
     #setup the basic layout
 
     toast(content = 'Click here to learn how this app works!',duration=0,color='warn',onclick=lambda : put_explainer())
-    #put_row([put_button('How to download the video/audio from youtube',color='warning',onclick=lambda : yt_tutorial()), put_button('How to convert a videofile',color='warning',onclick= lambda : file_tutorial())])
     put_text('''
             ''')
     output_box = output()
-    put_scrollable(output_box, height=500,keep_bottom=True)
+    put_scrollable(output_box, height=500,keep_bottom=True).style('outline: 3px dashed #2400ff;')
     put_link(name='Report a bug',url='https://forms.gle/wNiCuo7d3c1vsBb66',new_window=True)
 
     set_scope(name='output_md')
@@ -153,7 +156,7 @@ def webapp():
                     ])
 
                     resize_fac = 1
-                    toast('It can take some time to process your file, be patient ',duration=0,color='warn')
+                    #toast('It can take some time to process your file, please be patient ',duration=0,color='success')
 
 
 
@@ -172,7 +175,30 @@ def webapp():
                             if os.path.isfile (FILE_OUTPUT):
                                 os.remove (FILE_OUTPUT)
                             with use_scope('vid_to_mp4'):
-                                put_row([put_loading(shape='border',color='info'),put_text('Your file is being processed')])
+                                output_box.append(put_html('''
+
+                                <!DOCTYPE html>
+                                <html lang="en">
+                                  <head>
+                                    <meta charset="UTF-8" />
+                                    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+                                    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                                    <title>Waiting GIF</title>
+                                  </head>
+                                  <body>
+                                    <div class="wraper" style="width: 300px; height: 300px; border-radius: 0px">
+                                      <img
+                                        src="https://res.cloudinary.com/dj9urm5ic/image/upload/v1638114829/78259-loading_ebmlxg.gif"
+                                        alt="waiting gif"
+                                        class="waiting"
+                                        style="width: 100%; height: 100%; object-fit: contain"
+                                      />
+                                    </div>
+                                  </body>
+                                </html>
+
+
+                                '''))
 
                             with open (FILE_OUTPUT, "wb") as out_file:
                                 out_file.write(data['source'].get('content'))
@@ -189,7 +215,30 @@ def webapp():
                             with open (FILE_OUTPUT, "wb") as out_file:
                                 out_file.write(data['source'].get('content'))
                             with use_scope('vid_to_audio'):
-                                 put_row([put_loading(shape='border',color='info'),put_text('Your file is being processed')])
+                                  output_box.append(put_html('''
+
+                                <!DOCTYPE html>
+                                <html lang="en">
+                                  <head>
+                                    <meta charset="UTF-8" />
+                                    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+                                    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                                    <title>Waiting GIF</title>
+                                  </head>
+                                  <body>
+                                    <div class="wraper" style="width: 300px; height: 300px; border-radius: 0px">
+                                      <img
+                                        src="https://res.cloudinary.com/dj9urm5ic/image/upload/v1638114829/78259-loading_ebmlxg.gif"
+                                        alt="waiting gif"
+                                        class="waiting"
+                                        style="width: 100%; height: 100%; object-fit: contain"
+                                      />
+                                    </div>
+                                  </body>
+                                </html>
+
+
+                                '''))
                             vid_to_audio(source=FILE_OUTPUT,resize_factor=resize_fac,export=f'{file__name}.mp3')
                             clear('vid_to_audio')
 
@@ -206,7 +255,30 @@ def webapp():
                                 out_file.write(data['source'].get('content'))
 
                             with use_scope('vid_to_gif'):
-                                 put_row([put_loading(shape='border',color='info'),put_text('Your file is being processed')])
+                                  output_box.append(put_html('''
+
+                                <!DOCTYPE html>
+                                <html lang="en">
+                                  <head>
+                                    <meta charset="UTF-8" />
+                                    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+                                    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                                    <title>Waiting GIF</title>
+                                  </head>
+                                  <body>
+                                    <div class="wraper" style="width: 300px; height: 300px; border-radius: 0px">
+                                      <img
+                                        src="https://res.cloudinary.com/dj9urm5ic/image/upload/v1638114829/78259-loading_ebmlxg.gif"
+                                        alt="waiting gif"
+                                        class="waiting"
+                                        style="width: 100%; height: 100%; object-fit: contain"
+                                      />
+                                    </div>
+                                  </body>
+                                </html>
+
+
+                                '''))
                             toast('Gifs usually take some time to process',duration=0,color='warn')
                             vid_to_gif(source=FILE_OUTPUT,resize_factor=resize_fac,export=f'{file__name}.gif')
                             clear('vid_to_gif')
@@ -258,7 +330,30 @@ def webapp():
                     if os.path.isfile (f'{yt_title}.mp4'):
                         os.remove (f'{yt_title}.mp4')
                     with use_scope('yt_to_mp4'):
-                        put_row([put_loading(shape='border',color='info'),put_text('Your file is being processed')])
+                         output_box.append(put_html('''
+
+                                <!DOCTYPE html>
+                                <html lang="en">
+                                  <head>
+                                    <meta charset="UTF-8" />
+                                    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+                                    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                                    <title>Waiting GIF</title>
+                                  </head>
+                                  <body>
+                                    <div class="wraper" style="width: 300px; height: 300px; border-radius: 0px">
+                                      <img
+                                        src="https://res.cloudinary.com/dj9urm5ic/image/upload/v1638114829/78259-loading_ebmlxg.gif"
+                                        alt="waiting gif"
+                                        class="waiting"
+                                        style="width: 100%; height: 100%; object-fit: contain"
+                                      />
+                                    </div>
+                                  </body>
+                                </html>
+
+
+                                '''))
                     yt_to_mp4(data['url'],export=yt_title)
                     clear('yt_to_mp4')
                     output_box.append(put_file(name=f'{yt_title}.mp4',content=open(f'{yt_title}.mp4', 'rb').read()))
@@ -268,7 +363,30 @@ def webapp():
                     if os.path.isfile (f'{yt_title}.mp3'):
                         os.remove (f'{yt_title}.mp3')
                     with use_scope('vid_to_mp3'):
-                        put_row([put_loading(shape='border',color='info'),put_text('Your file is being processed')])
+                         output_box.append(put_html('''
+
+                                <!DOCTYPE html>
+                                <html lang="en">
+                                  <head>
+                                    <meta charset="UTF-8" />
+                                    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+                                    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                                    <title>Waiting GIF</title>
+                                  </head>
+                                  <body>
+                                    <div class="wraper" style="width: 300px; height: 300px; border-radius: 0px">
+                                      <img
+                                        src="https://res.cloudinary.com/dj9urm5ic/image/upload/v1638114829/78259-loading_ebmlxg.gif"
+                                        alt="waiting gif"
+                                        class="waiting"
+                                        style="width: 100%; height: 100%; object-fit: contain"
+                                      />
+                                    </div>
+                                  </body>
+                                </html>
+
+
+                                '''))
                     yt_to_audio(data['url'], export=yt_title)
                     clear('vid_to_mp3')
 
@@ -279,7 +397,7 @@ def webapp():
 
             except pytube.exceptions.VideoUnavailable:
                 popup ('Invalid url', [
-                    put_markdown("You have inputed an invalid youtube url, try again"),
+                    put_markdown("You have inputed an invalid youtube url, please try again"),
                     put_buttons (['Ok'], onclick=lambda _: close_popup())
                 ])
 
