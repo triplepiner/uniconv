@@ -6,6 +6,9 @@ from convert import vid_to_audio,vid_to_avi,vid_to_gif,vid_to_mp4,yt_to_mp4,yt_t
 import os
 import pywebio
 from pywebio import config
+import pytube.exceptions
+from time import sleep
+
 
 
 
@@ -131,6 +134,27 @@ def webapp():
 
     set_scope(name='output_md')
     output_box.append(put_markdown('> Hey there! Your output files will appear here \U0001F916',scope='output_md'))
+    output_box.append(put_html('''
+                                    <!DOCTYPE html>
+                                    <html lang="en">
+                                      <head>
+                                        <meta charset="UTF-8" />
+                                        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+                                        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                                        <title>Waiting GIF</title>
+                                      </head>
+                                      <body>
+                                        <div class="wraper" style="width: 300px; height: 300px; border-radius: 0px">
+                                          <img
+                                            src="https://res.cloudinary.com/dj9urm5ic/image/upload/v1638800142/Untitled_video_Made_with_Clipchamp_4_dxwamn.gif"
+                                            alt="waiting gif"
+                                            class="waiting"
+                                            style="width: 100%; height: 100%; object-fit: contain; margin:auto;"
+                                          />
+                                        </div>
+                                      </body>
+                                    </html>
+     '''))
 
 
     #collect the file/ yt video
@@ -143,162 +167,190 @@ def webapp():
             actions (name='cmd', buttons=['Proceed to conversion', {'label': 'Reset', 'type': 'reset'}])
         ])
 
-        # if data is None:
-        #     break
-        file__name = os.path.splitext(data['source'].get('filename'))[0]
-
         if data['source'] != None:
-            if data['source'].get('filename').lower().endswith('mp4')==True or data['source'].get('filename').lower().endswith('avi') or data['source'].get('filename').lower().endswith('mov') == True and data['url'] == '':
-                while True:
-                    format = input_group("Choose your export format",[
-                        radio(label='Export format',options=['mp4','avi','gif','mp3'],required=False, name='radio'),
-                        actions(name='last', buttons=['Submit', 'Go back'])
-                    ])
+            file__name = os.path.splitext(data['source'].get('filename'))[0]
 
-                    resize_fac = 1
-                    #toast('It can take some time to process your file, please be patient ',duration=0,color='success')
+            if data['source'] != None:
+                if data['source'].get('filename').lower().endswith('mp4')==True or data['source'].get('filename').lower().endswith('avi') or data['source'].get('filename').lower().endswith('mov') == True and data['url'] == '':
+                    while True:
+                        format = input_group("Choose your export format",[
+                            radio(label='Export format',options=['mp4','avi','gif','mp3'],required=False, name='radio'),
+                            actions(name='last', buttons=['Submit', 'Go back'])
+                        ])
 
-
-
-
-                    if format['last'] == 'Submit' and format['radio'] == None:
-                        put_warning('Please choose the format to convert to , try again',closable=True)
-
-                    if format['last'] == 'Go back':
-                        run_js('window.location.reload()')
-
-                    if format['radio'] != None:
-                        break
-                if format['last'] == 'Submit' and format['radio'] == 'mp4':
-
-                            FILE_OUTPUT = f'{file__name}.mp4'
-                            if os.path.isfile (FILE_OUTPUT):
-                                os.remove (FILE_OUTPUT)
-                            with use_scope('vid_to_mp4'):
-                                output_box.append(put_html('''
-
-                                <!DOCTYPE html>
-                                <html lang="en">
-                                  <head>
-                                    <meta charset="UTF-8" />
-                                    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-                                    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-                                    <title>Waiting GIF</title>
-                                  </head>
-                                  <body>
-                                    <div class="wraper" style="width: 300px; height: 300px; border-radius: 0px">
-                                      <img
-                                        src="https://res.cloudinary.com/dj9urm5ic/image/upload/v1638114829/78259-loading_ebmlxg.gif"
-                                        alt="waiting gif"
-                                        class="waiting"
-                                        style="width: 100%; height: 100%; object-fit: contain"
-                                      />
-                                    </div>
-                                  </body>
-                                </html>
+                        resize_fac = 1
+                        #toast('It can take some time to process your file, please be patient ',duration=0,color='success')
 
 
-                                '''))
-
-                            with open (FILE_OUTPUT, "wb") as out_file:
-                                out_file.write(data['source'].get('content'))
-
-                            clear('vid_to_mp4')
-                            output_box.append(put_file(FILE_OUTPUT,content=open(f'{file__name}.mp4', 'rb').read(),label=f'{file__name}.mp4'))
 
 
-                if format['last'] == 'Submit' and format['radio'] == 'mp3':
+                        if format['last'] == 'Submit' and format['radio'] == None:
+                            put_warning('Please choose the format to convert to , try again',closable=True)
 
-                            FILE_OUTPUT = f'{file__name}.mp4'
-                            if os.path.isfile (FILE_OUTPUT):
-                                os.remove (FILE_OUTPUT)
-                            with open (FILE_OUTPUT, "wb") as out_file:
-                                out_file.write(data['source'].get('content'))
-                            with use_scope('vid_to_audio'):
-                                  output_box.append(put_html('''
+                        if format['last'] == 'Go back':
+                            run_js('window.location.reload()')
 
-                                <!DOCTYPE html>
-                                <html lang="en">
-                                  <head>
-                                    <meta charset="UTF-8" />
-                                    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-                                    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-                                    <title>Waiting GIF</title>
-                                  </head>
-                                  <body>
-                                    <div class="wraper" style="width: 300px; height: 300px; border-radius: 0px">
-                                      <img
-                                        src="https://res.cloudinary.com/dj9urm5ic/image/upload/v1638114829/78259-loading_ebmlxg.gif"
-                                        alt="waiting gif"
-                                        class="waiting"
-                                        style="width: 100%; height: 100%; object-fit: contain"
-                                      />
-                                    </div>
-                                  </body>
-                                </html>
+                        if format['radio'] != None:
+                            break
+                    if format['last'] == 'Submit' and format['radio'] == 'mp4':
 
+                                FILE_OUTPUT = f'{file__name}.mp4'
+                                if os.path.isfile (FILE_OUTPUT):
+                                    os.remove (FILE_OUTPUT)
+                                with use_scope('vid_to_mp4'):
+                                    put_html('''
+  <!DOCTYPE html>
 
-                                '''))
-                            vid_to_audio(source=FILE_OUTPUT,resize_factor=resize_fac,export=f'{file__name}.mp3')
-                            clear('vid_to_audio')
-
-
-                            output_box.append(put_file(f'{file__name}.mp3',content=open(f'{file__name}.mp3', 'rb').read(),label=f'{file__name}.mp3'))
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Waiting GIF via script</title>
+  </head>
+  <body>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <lottie-player
+      src="https://assets2.lottiefiles.com/packages/lf20_szlepvdh.json"
+      background="transparent"
+      speed="1"
+      style="width: 600px; height: 600px; margin: auto"
+      loop
+      autoplay
+    ></lottie-player>
 
 
-                if format['last'] == 'Submit' and format['radio'] == 'gif':
-
-                            FILE_OUTPUT = f'{file__name}.mp4'
-                            if os.path.isfile (FILE_OUTPUT):
-                                os.remove (FILE_OUTPUT)
-                            with open (FILE_OUTPUT, "wb") as out_file:
-                                out_file.write(data['source'].get('content'))
-
-                            with use_scope('vid_to_gif'):
-                                  output_box.append(put_html('''
-
-                                <!DOCTYPE html>
-                                <html lang="en">
-                                  <head>
-                                    <meta charset="UTF-8" />
-                                    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-                                    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-                                    <title>Waiting GIF</title>
-                                  </head>
-                                  <body>
-                                    <div class="wraper" style="width: 300px; height: 300px; border-radius: 0px">
-                                      <img
-                                        src="https://res.cloudinary.com/dj9urm5ic/image/upload/v1638114829/78259-loading_ebmlxg.gif"
-                                        alt="waiting gif"
-                                        class="waiting"
-                                        style="width: 100%; height: 100%; object-fit: contain"
-                                      />
-                                    </div>
-                                  </body>
-                                </html>
 
 
-                                '''))
-                            toast('Gifs usually take some time to process',duration=0,color='warn')
-                            vid_to_gif(source=FILE_OUTPUT,resize_factor=resize_fac,export=f'{file__name}.gif')
-                            clear('vid_to_gif')
-                            output_box.append(put_file(f'{file__name}.gif',content=open(f'{file__name}.gif', 'rb').read(),label=f'{file__name}.gif'))
-
-                if format['last'] == 'Submit' and format['radio'] == 'avi':
-
-                    FILE_OUTPUT = f'{file__name}.avi'
-                    if os.path.isfile (FILE_OUTPUT):
-                        os.remove (FILE_OUTPUT)
-
-                    with use_scope('vid_to_avi'):
-                         put_row([put_loading(shape='border',color='info'),put_text('Your file is being processed')])
-
-                    with open (FILE_OUTPUT, "wb") as out_file:
-                        out_file.write (data['source'].get ('content'))
 
 
-                    clear('vid_to_avi')
-                    output_box.append (put_file (FILE_OUTPUT, content=open (f'{file__name}.avi', 'rb').read (), label=f'{file__name}.avi'))
+                                    ''')
+#
+                                with open (FILE_OUTPUT, "wb") as out_file:
+                                    out_file.write(data['source'].get('content'))
+
+                                clear('vid_to_mp4')
+                                output_box.append(put_file(FILE_OUTPUT,content=open(f'{file__name}.mp4', 'rb').read(),label=f'{file__name}.mp4'))
+
+
+                    if format['last'] == 'Submit' and format['radio'] == 'mp3':
+
+                                FILE_OUTPUT = f'{file__name}.mp4'
+                                if os.path.isfile (FILE_OUTPUT):
+                                    os.remove (FILE_OUTPUT)
+                                with open (FILE_OUTPUT, "wb") as out_file:
+                                    out_file.write(data['source'].get('content'))
+                                with use_scope('vid_to_audio'):
+                                      put_html('''
+
+  <!DOCTYPE html>
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Waiting GIF via script</title>
+  </head>
+  <body>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <lottie-player
+      src="https://assets2.lottiefiles.com/packages/lf20_szlepvdh.json"
+      background="transparent"
+      speed="1"
+      style="width: 600px; height: 600px; margin: auto"
+      loop
+      autoplay
+    ></lottie-player>
+  </body>
+
+
+
+
+                                    ''')
+                                vid_to_audio(source=FILE_OUTPUT,resize_factor=resize_fac,export=f'{file__name}.mp3')
+                                clear('vid_to_audio')
+
+
+                                output_box.append(put_file(f'{file__name}.mp3',content=open(f'{file__name}.mp3', 'rb').read(),label=f'{file__name}.mp3'))
+
+
+                    if format['last'] == 'Submit' and format['radio'] == 'gif':
+
+                                FILE_OUTPUT = f'{file__name}.mp4'
+                                if os.path.isfile (FILE_OUTPUT):
+                                    os.remove (FILE_OUTPUT)
+                                with open (FILE_OUTPUT, "wb") as out_file:
+                                    out_file.write(data['source'].get('content'))
+
+                                with use_scope('vid_to_gif'):
+                                      put_html('''
+
+  <!DOCTYPE html>
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Waiting GIF via script</title>
+  </head>
+  <body>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <lottie-player
+      src="https://assets2.lottiefiles.com/packages/lf20_szlepvdh.json"
+      background="transparent"
+      speed="1"
+      style="width: 600px; height: 600px; margin: auto"
+      loop
+      autoplay
+    ></lottie-player>
+  </body>
+
+
+
+                                    ''')
+                                toast('Gifs usually take some time to process',duration=0,color='warn')
+                                vid_to_gif(source=FILE_OUTPUT,resize_factor=resize_fac,export=f'{file__name}.gif')
+                                clear('vid_to_gif')
+                                output_box.append(put_file(f'{file__name}.gif',content=open(f'{file__name}.gif', 'rb').read(),label=f'{file__name}.gif'))
+
+                    if format['last'] == 'Submit' and format['radio'] == 'avi':
+
+                        FILE_OUTPUT = f'{file__name}.avi'
+                        if os.path.isfile (FILE_OUTPUT):
+                            os.remove (FILE_OUTPUT)
+
+                        with use_scope('vid_to_avi'):
+                             put_html('''
+
+  <!DOCTYPE html>
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Waiting GIF via script</title>
+  </head>
+  <body>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <lottie-player
+      src="https://assets2.lottiefiles.com/packages/lf20_szlepvdh.json"
+      background="transparent"
+      speed="1"
+      style="width: 600px; height: 600px; margin: auto"
+      loop
+      autoplay
+    ></lottie-player>
+  </body>
+
+
+
+                                    ''')
+
+                        with open (FILE_OUTPUT, "wb") as out_file:
+                            out_file.write (data['source'].get ('content'))
+
+
+                        clear('vid_to_avi')
+                        output_box.append (put_file (FILE_OUTPUT, content=open (f'{file__name}.avi', 'rb').read (), label=f'{file__name}.avi'))
 
         # format the user wants from yt video
         if data['url'] != '' and data['source'] == None:
@@ -330,30 +382,31 @@ def webapp():
                     if os.path.isfile (f'{yt_title}.mp4'):
                         os.remove (f'{yt_title}.mp4')
                     with use_scope('yt_to_mp4'):
-                         output_box.append(put_html('''
+                         put_html('''
 
-                                <!DOCTYPE html>
-                                <html lang="en">
-                                  <head>
-                                    <meta charset="UTF-8" />
-                                    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-                                    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-                                    <title>Waiting GIF</title>
-                                  </head>
-                                  <body>
-                                    <div class="wraper" style="width: 300px; height: 300px; border-radius: 0px">
-                                      <img
-                                        src="https://res.cloudinary.com/dj9urm5ic/image/upload/v1638114829/78259-loading_ebmlxg.gif"
-                                        alt="waiting gif"
-                                        class="waiting"
-                                        style="width: 100%; height: 100%; object-fit: contain"
-                                      />
-                                    </div>
-                                  </body>
-                                </html>
+  <!DOCTYPE html>
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Waiting GIF via script</title>
+  </head>
+  <body>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <lottie-player
+      src="https://assets2.lottiefiles.com/packages/lf20_szlepvdh.json"
+      background="transparent"
+      speed="1"
+      style="width: 600px; height: 600px; margin: auto"
+      loop
+      autoplay
+    ></lottie-player>
+  </body>
 
 
-                                '''))
+
+                                ''')
                     yt_to_mp4(data['url'],export=yt_title)
                     clear('yt_to_mp4')
                     output_box.append(put_file(name=f'{yt_title}.mp4',content=open(f'{yt_title}.mp4', 'rb').read()))
@@ -363,30 +416,30 @@ def webapp():
                     if os.path.isfile (f'{yt_title}.mp3'):
                         os.remove (f'{yt_title}.mp3')
                     with use_scope('vid_to_mp3'):
-                         output_box.append(put_html('''
+                         put_html('''
 
-                                <!DOCTYPE html>
-                                <html lang="en">
-                                  <head>
-                                    <meta charset="UTF-8" />
-                                    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-                                    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-                                    <title>Waiting GIF</title>
-                                  </head>
-                                  <body>
-                                    <div class="wraper" style="width: 300px; height: 300px; border-radius: 0px">
-                                      <img
-                                        src="https://res.cloudinary.com/dj9urm5ic/image/upload/v1638114829/78259-loading_ebmlxg.gif"
-                                        alt="waiting gif"
-                                        class="waiting"
-                                        style="width: 100%; height: 100%; object-fit: contain"
-                                      />
-                                    </div>
-                                  </body>
-                                </html>
+  <!DOCTYPE html>
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Waiting GIF via script</title>
+  </head>
+  <body>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <lottie-player
+      src="https://assets2.lottiefiles.com/packages/lf20_szlepvdh.json"
+      background="transparent"
+      speed="1"
+      style="width: 600px; height: 600px; margin: auto"
+      loop
+      autoplay
+    ></lottie-player>
+  </body>
 
 
-                                '''))
+                                ''')
                     yt_to_audio(data['url'], export=yt_title)
                     clear('vid_to_mp3')
 
@@ -396,19 +449,21 @@ def webapp():
 
 
             except pytube.exceptions.VideoUnavailable:
-                popup ('Invalid url', [
-                    put_markdown("You have inputed an invalid youtube url, please try again"),
-                    put_buttons (['Ok'], onclick=lambda _: close_popup())
-                ])
+                put_warning("You have inputed an invalid youtube url, please try again.")
+            except Exception:
+                run_js('window.location.reload()')
+                put_error("Something went wring with the video. Probably, the video was private. Try imputing another one, or if even this fails, report a bug.")
+
+
+
 
 # #errors
 
 
         if data['url'] != '' and data['source'] != None:
-            popup('Error, both formats', [
-                put_markdown ("You can't convert a file and a youtube link at the same  time"),
-                put_buttons (['Ok'], onclick=lambda _: close_popup())
-            ])
+                put_warning("You have inputed both the file an the link, please try again.")
+
+
 #app launch
 
 

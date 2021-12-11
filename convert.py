@@ -21,7 +21,7 @@ ssl._create_default_https_context = ssl._create_unverified_context
 #     print("The new directory is created!")
 
 def vid_to_gif(source,resize_factor,export):
-    clip = VideoFileClip(source).resize(resize_factor)
+    clip = VideoFileClip(source).resize(height=280)
     clip.write_gif(export)
 
 def vid_to_avi(source,resize_factor,export):
@@ -55,6 +55,8 @@ def vid_to_mp4(source,resize_factor,export):
 def vid_to_audio(source,resize_factor,export):
     clip = VideoFileClip(source).resize(resize_factor)
     clip.audio.write_audiofile(export)
+
+
 def yt_to_mp4(source,export):
     youtube = pytube.YouTube(source)
     video = youtube.streams.filter(file_extension='mp4').first()
@@ -62,12 +64,12 @@ def yt_to_mp4(source,export):
 
 def yt_to_audio(source,export):
     youtube = pytube.YouTube(source)
-    video = youtube.streams.first()
+    video = youtube.streams.get_audio_only()
     video.download(filename='useless_file.mp4')
     mp4_file = 'useless_file.mp4'
     mp3_file = f'{export}.mp3'
-    clip = VideoFileClip(mp4_file)
-    clip.audio.write_audiofile(mp3_file)
+    clip = AudioFileClip(mp4_file)
+    clip.write_audiofile(mp3_file)
     os.remove(mp4_file)
 
 def yt_videotitle(source):
