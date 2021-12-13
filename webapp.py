@@ -17,7 +17,7 @@ from time import sleep
 
 
 
-@config(title="Uniconv")
+@config(title="Uniconv", description='The best videofile conversion tool for personal use!')
 
 
 # We create our webapp
