@@ -120,20 +120,22 @@ def webapp():
 
 
 
-    def put_explainer():
-        popup(title='What is it?',content =[put_image(open('screenshot (2).png', 'rb').read())],size='large',closable=True)
-
-    #setup the basic layout
-
-    toast(content = 'Click here to learn how this app works!',duration=0,color='warn',onclick=lambda : put_explainer())
+#     def put_explainer():
+#         popup(title='What is it?',content =[put_image(open('screenshot (2).png', 'rb').read())],size='large',closable=True)
+#
+#     #setup the basic layout
+#
+#     toast(content = 'Click here to learn how this app works!',duration=0,color='warn',onclick=lambda : put_explainer())
     put_text('''
             ''')
+
     output_box = output()
     put_scrollable(output_box, height=500,keep_bottom=True).style('outline: 3px dashed #2400ff;')
     put_link(name='Report a bug',url='https://forms.gle/wNiCuo7d3c1vsBb66',new_window=True)
 
     set_scope(name='output_md')
-    output_box.append(put_markdown('> Hey there! Your output files will appear here \U0001F916',scope='output_md'))
+    output_box.append(put_markdown(''' ## The Ultimate Video File Converter!
+    > Hey there! Your output files will appear here \U0001F916'''))
     output_box.append(put_html('''
                                     <!DOCTYPE html>
                                     <html lang="en">
@@ -199,24 +201,25 @@ def webapp():
                                     os.remove (FILE_OUTPUT)
                                 with use_scope('vid_to_mp4'):
                                     put_html('''
-  <!DOCTYPE html>
-
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Waiting GIF via script</title>
-  </head>
-  <body>
-    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-    <lottie-player
-      src="https://assets2.lottiefiles.com/packages/lf20_szlepvdh.json"
-      background="transparent"
-      speed="1"
-      style="width: 600px; height: 600px; margin: auto"
-      loop
-      autoplay
-    ></lottie-player>
+                                    <!DOCTYPE html>
+                                    <html lang="en">
+                                      <head>
+                                        <meta charset="UTF-8" />
+                                        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+                                        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                                        <title>Waiting GIF</title>
+                                      </head>
+                                      <body>
+                                        <div class="wraper" style="width: 300px; height: 300px; border-radius: 0px">
+                                          <img
+                                            src="https://res.cloudinary.com/dj9urm5ic/image/upload/v1639478732/loading_gif_Made_with_Clipchamp_quuxs1.gif"
+                                            alt="waiting gif"
+                                            class="waiting"
+                                            style="width: 100%; height: 100%; object-fit: contain; margin:auto;"
+                                          />
+                                        </div>
+                                      </body>
+                                    </html>
 
 
 
@@ -242,25 +245,26 @@ def webapp():
                                 with use_scope('vid_to_audio'):
                                       put_html('''
 
-  <!DOCTYPE html>
+                                     <!DOCTYPE html>
+                                    <html lang="en">
+                                      <head>
+                                        <meta charset="UTF-8" />
+                                        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+                                        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                                        <title>Waiting GIF</title>
+                                      </head>
+                                      <body>
+                                        <div class="wraper" style="width: 300px; height: 300px; border-radius: 0px">
+                                          <img
+                                            src="https://res.cloudinary.com/dj9urm5ic/image/upload/v1639478732/loading_gif_Made_with_Clipchamp_quuxs1.gif"
+                                            alt="waiting gif"
+                                            class="waiting"
+                                            style="width: 100%; height: 100%; object-fit: contain; margin:auto;"
+                                          />
+                                        </div>
+                                      </body>
+                                    </html>
 
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Waiting GIF via script</title>
-  </head>
-  <body>
-    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-    <lottie-player
-      src="https://assets2.lottiefiles.com/packages/lf20_szlepvdh.json"
-      background="transparent"
-      speed="1"
-      style="width: 600px; height: 600px; margin: auto"
-      loop
-      autoplay
-    ></lottie-player>
-  </body>
 
 
 
@@ -284,25 +288,26 @@ def webapp():
                                 with use_scope('vid_to_gif'):
                                       put_html('''
 
-  <!DOCTYPE html>
+                                      <!DOCTYPE html>
+                                    <html lang="en">
+                                      <head>
+                                        <meta charset="UTF-8" />
+                                        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+                                        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                                        <title>Waiting GIF</title>
+                                      </head>
+                                      <body>
+                                        <div class="wraper" style="width: 300px; height: 300px; border-radius: 0px">
+                                          <img
+                                            src="https://res.cloudinary.com/dj9urm5ic/image/upload/v1639478732/loading_gif_Made_with_Clipchamp_quuxs1.gif"
+                                            alt="waiting gif"
+                                            class="waiting"
+                                            style="width: 100%; height: 100%; object-fit: contain; margin:auto;"
+                                          />
+                                        </div>
+                                      </body>
+                                    </html>
 
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Waiting GIF via script</title>
-  </head>
-  <body>
-    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-    <lottie-player
-      src="https://assets2.lottiefiles.com/packages/lf20_szlepvdh.json"
-      background="transparent"
-      speed="1"
-      style="width: 600px; height: 600px; margin: auto"
-      loop
-      autoplay
-    ></lottie-player>
-  </body>
 
 
 
@@ -321,25 +326,25 @@ def webapp():
                         with use_scope('vid_to_avi'):
                              put_html('''
 
-  <!DOCTYPE html>
-
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Waiting GIF via script</title>
-  </head>
-  <body>
-    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-    <lottie-player
-      src="https://assets2.lottiefiles.com/packages/lf20_szlepvdh.json"
-      background="transparent"
-      speed="1"
-      style="width: 600px; height: 600px; margin: auto"
-      loop
-      autoplay
-    ></lottie-player>
-  </body>
+                                    <!DOCTYPE html>
+                                    <html lang="en">
+                                      <head>
+                                        <meta charset="UTF-8" />
+                                        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+                                        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                                        <title>Waiting GIF</title>
+                                      </head>
+                                      <body>
+                                        <div class="wraper" style="width: 300px; height: 300px; border-radius: 0px">
+                                          <img
+                                            src="https://res.cloudinary.com/dj9urm5ic/image/upload/v1639478732/loading_gif_Made_with_Clipchamp_quuxs1.gif"
+                                            alt="waiting gif"
+                                            class="waiting"
+                                            style="width: 100%; height: 100%; object-fit: contain; margin:auto;"
+                                          />
+                                        </div>
+                                      </body>
+                                    </html>
 
 
 
@@ -384,25 +389,26 @@ def webapp():
                     with use_scope('yt_to_mp4'):
                          put_html('''
 
-  <!DOCTYPE html>
+                                    <!DOCTYPE html>
+                                    <html lang="en">
+                                      <head>
+                                        <meta charset="UTF-8" />
+                                        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+                                        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                                        <title>Waiting GIF</title>
+                                      </head>
+                                      <body>
+                                        <div class="wraper" style="width: 300px; height: 300px; border-radius: 0px">
+                                          <img
+                                            src="https://res.cloudinary.com/dj9urm5ic/image/upload/v1639478732/loading_gif_Made_with_Clipchamp_quuxs1.gif"
+                                            alt="waiting gif"
+                                            class="waiting"
+                                            style="width: 100%; height: 100%; object-fit: contain; margin:auto;"
+                                          />
+                                        </div>
+                                      </body>
+                                    </html>
 
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Waiting GIF via script</title>
-  </head>
-  <body>
-    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-    <lottie-player
-      src="https://assets2.lottiefiles.com/packages/lf20_szlepvdh.json"
-      background="transparent"
-      speed="1"
-      style="width: 600px; height: 600px; margin: auto"
-      loop
-      autoplay
-    ></lottie-player>
-  </body>
 
 
 
@@ -418,25 +424,25 @@ def webapp():
                     with use_scope('vid_to_mp3'):
                          put_html('''
 
-  <!DOCTYPE html>
-
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Waiting GIF via script</title>
-  </head>
-  <body>
-    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-    <lottie-player
-      src="https://assets2.lottiefiles.com/packages/lf20_szlepvdh.json"
-      background="transparent"
-      speed="1"
-      style="width: 600px; height: 600px; margin: auto"
-      loop
-      autoplay
-    ></lottie-player>
-  </body>
+                                    <!DOCTYPE html>
+                                    <html lang="en">
+                                      <head>
+                                        <meta charset="UTF-8" />
+                                        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+                                        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                                        <title>Waiting GIF</title>
+                                      </head>
+                                      <body>
+                                        <div class="wraper" style="width: 300px; height: 300px; border-radius: 0px">
+                                          <img
+                                            src="https://res.cloudinary.com/dj9urm5ic/image/upload/v1639478732/loading_gif_Made_with_Clipchamp_quuxs1.gif"
+                                            alt="waiting gif"
+                                            class="waiting"
+                                            style="width: 100%; height: 100%; object-fit: contain; margin:auto;"
+                                          />
+                                        </div>
+                                      </body>
+                                    </html>
 
 
                                 ''')

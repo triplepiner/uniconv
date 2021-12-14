@@ -21,7 +21,7 @@ ssl._create_default_https_context = ssl._create_unverified_context
 #     print("The new directory is created!")
 
 def vid_to_gif(source,resize_factor,export):
-    clip = VideoFileClip(source).resize(height=280)
+    clip = VideoFileClip(source).resize(height=120)
     clip.write_gif(export)
 
 def vid_to_avi(source,resize_factor,export):
