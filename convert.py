@@ -64,7 +64,7 @@ def yt_to_mp4(source,export):
 
 def yt_to_audio(source,export):
     youtube = pytube.YouTube(source)
-    video = youtube.streams.get_audio_only()
+    video = youtube.streams.filter(file_extension='mp4').first()
     video.download(filename='useless_file.mp4')
     mp4_file = 'useless_file.mp4'
     mp3_file = f'{export}.mp3'

@@ -77,14 +77,14 @@ def webapp():
      <div class="buttonWrap">
       <div class="ph">
         <a href="" target="_blank"
-          ><img src="https://res.cloudinary.com/dj9urm5ic/image/upload/v1636980992/ProductHuntButton_nowhh5.png" alt="Product Hunt Link"
+          ><img src="https://res.cloudinary.com/dj9urm5ic/image/upload/v1639560093/ProductHuntButton_nowhh5_4__digital_art_x4_1_3_z4zx7s.png" alt="Product Hunt Link"
         /></a>
       </div>
       <div class="coffee">
         <a href="https://www.patreon.com/bePatron?u=10145585" target="_blank"
           ><img
             class="coffeeImg"
-            src="https://res.cloudinary.com/dj9urm5ic/image/upload/v1637682600/ProductHuntButton_nowhh5_2_.png_xzmrcl.png"
+            src="https://res.cloudinary.com/dj9urm5ic/image/upload/v1639560093/ProductHuntButton_nowhh5_4__digital_art_x4_1_2_lnypln.png"
             alt="Buy Me A Coffee Link"
         /></a>
       </div>
@@ -366,7 +366,12 @@ def webapp():
                     run_js('window.location.reload()')
                 ])
             if data['url'].startswith('https://www.youtube.com/watch?v=') or data['url'].startswith('www.youtube.com/watch?v=') or data['url'].startswith('https://youtu.be/') or data['url'].startswith('http://www.youtube.com/watch?v='):
-                yt_title = yt_videotitle(data['url'])
+                try:
+                    yt_title = yt_videotitle(data['url'])
+
+                    yt_title = yt_title.translate(str.maketrans('','','/!@#$'))
+                except AttributeError:
+                    yt_title = 'Youtube_Video'
                 while True:
                     linker = input_group ("Choose your export format", [
                         radio (label='Export format', options=['mp4', 'mp3'], required=False,name='radio'),
@@ -458,7 +463,7 @@ def webapp():
                 put_warning("You have inputed an invalid youtube url, please try again.")
             except Exception:
                 run_js('window.location.reload()')
-                put_error("Something went wring with the video. Probably, the video was private. Try imputing another one, or if even this fails, report a bug.")
+                put_error(put_text("Something went wring with the video. Probably, the video was private. Try imputing another one, or if even this fails, report a bug."),closable=True)
 
 
 
