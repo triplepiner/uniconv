@@ -90,6 +90,8 @@ def webapp():
       </div>
      </div>
     </header>
+    <a href='https://www.sideprojectors.com/project/25817/uniconv' alt='Uniconv is for sale at @SideProjectors'><img style='position:fixed;z-index:1000;top:-5px; right: 20px; border: 0;' src='https://www.sideprojectors.com/img/badges/badge_2_red.png' alt='Uniconv is sale at @SideProjectors'></a>
+
         <!-- Yandex.Metrika counter -->
     <script type="text/javascript" >
        (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
